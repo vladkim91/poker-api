@@ -1,102 +1,99 @@
-const { gql } = require('apollo-server')
+const { gql } = require('apollo-server');
 exports.typeDefs = gql`
-    type Query {   
-        players: [Player!]!
-    }
-    type Mutation {
-        calcWinner(input: PlayerInput!): Hand!
-    }
+  type Query {
+    players: [Player!]!
+  }
+  type Mutation {
+    calcWinner(input: PlayerInput!): Hand!
+  }
 
-    type Hand {
-        id: ID!
-        winners: Player!
-        players: [Player!]!
-    }
-    
-    type Player {
-        id: ID!
-        cards: String!
-        handStrength: Int!
-        communityCards: String!
-    }
+  type Hand {
+    id: ID!
+    winners: Player!
+    players: [Player!]!
+  }
 
-    input PlayerInput {
-        players: String!
-    }
-    # type Product {
-    #     id: ID!
-    #     name: String!
-    #     description: String!
-    #     quantity: Int!
-    #     price: Float!
-    #     image: String!
-    #     onSale: Boolean!
-    #     category: Category
-    #     reviews: [Review!]!
-    # }
+  type Player {
+    id: ID!
+    cards: String!
+    handStrength: Int!
+    communityCards: String!
+  }
 
-    # type Category {
-    #     id: ID!
-    #     name: String!
-    #     products(filter:InputProductFilter): [Product]!
-    # }
+  input PlayerInput {
+    players: String!
+  }
+  # type Product {
+  #     id: ID!
+  #     name: String!
+  #     description: String!
+  #     quantity: Int!
+  #     price: Float!
+  #     image: String!
+  #     onSale: Boolean!
+  #     category: Category
+  #     reviews: [Review!]!
+  # }
 
-    # type Review {
-    #     id: ID!
-    #     date: String!
-    #     title: String!
-    #     comment: String!
-    #     rating: Int!
-    #     productId: String!
-    # }
+  # type Category {
+  #     id: ID!
+  #     name: String!
+  #     products(filter:InputProductFilter): [Product]!
+  # }
 
-    # input InputProductFilter {
-    #     onSale: Boolean
-    #     averageRating: Int
-    # }
+  # type Review {
+  #     id: ID!
+  #     date: String!
+  #     title: String!
+  #     comment: String!
+  #     rating: Int!
+  #     productId: String!
+  # }
 
-    # input addCategoryInput {
-    #     name: String!
-    # }
-    # input updateCategoryInput {
-    #     name: String!
-    # }
+  # input InputProductFilter {
+  #     onSale: Boolean
+  #     averageRating: Int
+  # }
 
-    # input addProductInput {
-    #     name: String!
-    #     description: String!
-    #     quantity: Int!
-    #     price: Float!
-    #     image: String!
-    #     onSale: Boolean!
-    #     categoryId: ID!
-        
-    # }
-    # input updateProductInput {
-    #     name: String!
-    #     description: String!
-    #     quantity: Int!
-    #     price: Float!
-    #     image: String!
-    #     onSale: Boolean!
+  # input addCategoryInput {
+  #     name: String!
+  # }
+  # input updateCategoryInput {
+  #     name: String!
+  # }
 
-        
-    # }
+  # input addProductInput {
+  #     name: String!
+  #     description: String!
+  #     quantity: Int!
+  #     price: Float!
+  #     image: String!
+  #     onSale: Boolean!
+  #     categoryId: ID!
 
-    # input addReviewInput {
-    #     date: String!
-    #     title: String!
-    #     comment: String!
-    #     rating: Int!
-    #     productId: ID!
-    # }
-    # input updateReviewInput {
-    #     date: String!
-    #     title: String!
-    #     comment: String!
-    #     rating: Int!
-    #     productId: ID!
-    # }
+  # }
+  # input updateProductInput {
+  #     name: String!
+  #     description: String!
+  #     quantity: Int!
+  #     price: Float!
+  #     image: String!
+  #     onSale: Boolean!
 
+  # }
 
-`
+  # input addReviewInput {
+  #     date: String!
+  #     title: String!
+  #     comment: String!
+  #     rating: Int!
+  #     productId: ID!
+  # }
+  # input updateReviewInput {
+  #     date: String!
+  #     title: String!
+  #     comment: String!
+  #     rating: Int!
+  #     productId: ID!
+  # }
+`;
