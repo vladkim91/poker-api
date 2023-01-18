@@ -428,17 +428,18 @@ exports.Mutation = {
                 .sort((a, b) => b - a)
             );
           }
-          for (let i = 0; i < 7; i++) {
-            highestScore = winnerScores[0][i];
-            for (let j = 1; j < winnerScores.length; j++) {
-              if (winnerScores[j][i] !== highestScore) {
-                if (winnerScores[j][i] < highestScore)
-                  console.log('winner at index 0');
-                else if (winnerScores[j][i] > highestScore)
-                  highestScore = winnerScores[j][i];
-                console.log('card', winnerScores[j][i]);
-                console.log('score', highestScore);
-              }
+          // Loop throogh the first 5 cards with highest value
+          for (let j = 0; j < 5; j++) {
+            const cards = [];
+            // Add ith cards from every player to the array
+            for (let i = 0; i < indices.length; i++) {
+              cards.push(winnerScores[i][j]);
+            }
+            // Find max value of current set of hands
+            const maxValue = Math.max(...cards);
+
+            if (!cards.every((card) => card == maxValue)) {
+              return cards.indexOf(maxValue);
             }
           }
         };
@@ -446,14 +447,24 @@ exports.Mutation = {
         // Run the check for highest scoring combination
         switch (highestStrength) {
           case 0:
-            checkHighCardTie(winnersIndices);
+            return checkHighCardTie(winnersIndices);
         }
       } else {
-        console.log('One winner');
-      }
-    };
+        let winnerId;
+        let maxStrength = -1;
+        for (let player of players) {
+          if (player.handStrength > maxStrength) {
+            maxStrength = player.handStrength;
+            winnerId = player.id;
+          }
+        }
 
-    compareHandStrength();
+        return players.findIndex((player) => player.id === winnerId);
+      }
+      // else {
+      //   return
+      // }
+    };
 
     /**
      *
@@ -477,20 +488,22 @@ exports.Mutation = {
       const handStrengthArray = playerArray.map(
         (player) => player.handStrength
       );
-      const maxStrength = Math.max(...handStrengthArray);
+      let maxStrength = Math.max(...handStrengthArray);
       // Check if there are more than 1 maxStrength present in the array
 
-      let winnerId = '';
-      let highestHandStrength = -1;
-      // Find the greatest handStrength and replace winner Id with playerId
-      for (let player of playerArray) {
-        if (player.handStrength > highestHandStrength) {
-          highestHandStrength = player.handStrength;
-          winnerId = player.id;
-        }
-      }
+      const winnerId = compareHandStrength();
+      console.log(winnerId, 'winner');
+      console.log(players[compareHandStrength()]);
 
-      console.log(`Winner id ${winnerId}`);
+      // Find the greatest handStrength and replace winner Id with playerId
+      // for (let player of playerArray) {
+      //   if (player.handStrength > maxStrength) {
+      //     maxStrength = player.handStrength;
+      //     winnerId = player.id;
+      //   }
+      // }
+
+      console.log(`Winner id ${players[winnerId].id}`);
     };
 
     checkWinner(players);
