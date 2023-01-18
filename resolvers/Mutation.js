@@ -85,7 +85,7 @@ exports.Mutation = {
       let combinedHandArray = combinedHand.split(',');
       const combinedHandArrayClone = [...combinedHandArray];
       const madeHands = {
-        highCard: '',
+        winningCombination: [],
         hasPair: { made: false, highestCard: null },
         hasTwoPair: { made: false, highestCard: null },
         hasThreeOfaKind: { made: false, highestCard: null },
@@ -385,7 +385,7 @@ exports.Mutation = {
       };
 
       checkEveryCombination();
-      //   console.log(madeHands);
+      console.log(madeHands);
       return madeHands;
     }
     // add hand strength to player array
@@ -395,8 +395,18 @@ exports.Mutation = {
         communityCards
       ).handStrength;
     }
-    // find identical hand strength and return a winner
+
+    /**
+     * find identical hand strength and return a winner
+     * @returns index of the winner
+     */
     const compareHandStrength = () => {
+      // Reverse card value to playing cards
+      const getCardByValue = (value) => {
+        return Object.keys(cardRanking).find(
+          (key) => cardRanking[key] === value
+        );
+      };
       // Isolate hand strength from array of all players
       const strengthArray = Object.values(players).map((e) => e.handStrength);
       // Find the highest strength
@@ -439,6 +449,30 @@ exports.Mutation = {
             const maxValue = Math.max(...cards);
 
             if (!cards.every((card) => card == maxValue)) {
+              const everyCard = [
+                ...players[cards.indexOf(maxValue)].hand.concat(
+                  ...communityCards
+                )
+              ];
+              // find 5 best cards
+
+              const bestFiveCardsToValuesSorted = everyCard
+                .map((card) => {
+                  return [cardRanking[card[0]], card[1]];
+                  // return cardRanking(card[0]) + card[1];
+                })
+                .sort((a, b) => b[0] - a[0])
+                .slice(0, 5)
+                .map((card) => {
+                  return getCardByValue(card[0]) + card[1];
+                });
+              console.log(players[cards.indexOf(maxValue)]);
+              // console.log(
+              //   players[cards.indexOf(maxValue)].winningCombination.push(
+              //     ...bestFiveCardsToValuesSorted
+              //   )
+              // );
+
               return cards.indexOf(maxValue);
             }
           }
@@ -485,25 +519,15 @@ exports.Mutation = {
     };
 
     const checkWinner = (playerArray) => {
-      const handStrengthArray = playerArray.map(
-        (player) => player.handStrength
+      // const handStrengthArray = playerArray.map(
+      //   (player) => player.handStrength
+      // );
+
+      const winnerIdx = compareHandStrength();
+
+      console.log(
+        `Winner id ${players[winnerIdx].id} ${players[winnerIdx].handStrength}, ${players[winnerIdx]}`
       );
-      let maxStrength = Math.max(...handStrengthArray);
-      // Check if there are more than 1 maxStrength present in the array
-
-      const winnerId = compareHandStrength();
-      console.log(winnerId, 'winner');
-      console.log(players[compareHandStrength()]);
-
-      // Find the greatest handStrength and replace winner Id with playerId
-      // for (let player of playerArray) {
-      //   if (player.handStrength > maxStrength) {
-      //     maxStrength = player.handStrength;
-      //     winnerId = player.id;
-      //   }
-      // }
-
-      console.log(`Winner id ${players[winnerId].id}`);
     };
 
     checkWinner(players);
