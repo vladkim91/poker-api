@@ -385,15 +385,19 @@ exports.Mutation = {
       };
 
       checkEveryCombination();
-      console.log(madeHands);
+
       return madeHands;
     }
     // add hand strength to player array
     for (let i in players) {
-      players[i].handStrength = checkHand(
-        players[i].hand,
-        communityCards
-      ).handStrength;
+      // players[i].handStrength = checkHand(
+      //   players[i].hand,
+      //   communityCards
+      // ).handStrength;
+      players[i] = {
+        ...players[i],
+        ...checkHand(players[i].hand, communityCards)
+      };
     }
 
     /**
@@ -411,7 +415,6 @@ exports.Mutation = {
       const strengthArray = Object.values(players).map((e) => e.handStrength);
       // Find the highest strength
       const highestStrength = Math.max(...strengthArray);
-      console.log(strengthArray, highestStrength);
       // Check if there are more than 1 players with the highest strength hand
       if (strengthArray.filter((e) => e === highestStrength).length > 1) {
         const winnersIndices = [];
@@ -447,8 +450,7 @@ exports.Mutation = {
             }
             // Find max value of current set of hands
             const maxValue = Math.max(...cards);
-
-            if (!cards.every((card) => card == maxValue)) {
+            const findWinningFive = (cards, maxValue) => {
               const everyCard = [
                 ...players[cards.indexOf(maxValue)].hand.concat(
                   ...communityCards
@@ -466,16 +468,49 @@ exports.Mutation = {
                 .map((card) => {
                   return getCardByValue(card[0]) + card[1];
                 });
-              console.log(players[cards.indexOf(maxValue)]);
-              // console.log(
-              //   players[cards.indexOf(maxValue)].winningCombination.push(
-              //     ...bestFiveCardsToValuesSorted
-              //   )
-              // );
+              return bestFiveCardsToValuesSorted;
+            };
+            // return index or indices of the players with the best winning combination
+            if (
+              !cards.every((card) => card == maxValue) &&
+              cards.filter((card) => card == maxValue).length == 1
+            ) {
+              // add winning combo to the player with the best hand
+              if (
+                players[cards.indexOf(maxValue)].winningCombination.length == 0
+              ) {
+                players[cards.indexOf(maxValue)].winningCombination.push(
+                  ...findWinningFive(cards, maxValue)
+                );
+              }
 
+              // returns index of the winner
               return cards.indexOf(maxValue);
+            } else if (
+              // If there's more than 1 winner with highest value
+              !cards.every((card) => card == maxValue) &&
+              cards.filter((card) => card == maxValue).length > 1
+            ) {
+              // returns array
+              const winnersIndices = cards
+                .map((card, idx) => {
+                  if (card !== maxValue) return null;
+                  else return idx;
+                })
+                .filter((idx) => idx !== null);
+              winnersIndices.forEach((idx) => {
+                if (players[idx].winningCombination.length == 0) {
+                  players[idx].winningCombination.push(
+                    ...findWinningFive(cards, maxValue)
+                  );
+                }
+              });
+
+              return winnersIndices;
             }
           }
+          // return all players
+          return indices;
         };
 
         // Run the check for highest scoring combination
@@ -518,18 +553,27 @@ exports.Mutation = {
       return winnerId;
     };
 
-    const checkWinner = (playerArray) => {
-      // const handStrengthArray = playerArray.map(
-      //   (player) => player.handStrength
-      // );
-
+    const checkWinner = () => {
       const winnerIdx = compareHandStrength();
+      if (typeof winnerIdx == 'object') {
+        const winners = [];
+        for (let i of winnerIdx) {
+          winners.push(players[i]);
+        }
+        console.log(winners);
+        return winners;
+      } else if (typeof winnerIdx == 'number') {
+        return players[winnerIdx];
+      }
 
-      console.log(
-        `Winner id ${players[winnerIdx].id} ${players[winnerIdx].handStrength}, ${players[winnerIdx]}`
-      );
+      console
+        .log
+        // `Winner id ${players[winnerIdx].id} ${players[winnerIdx].handStrength} `
+        ();
+      // console.log(players);
     };
-
-    checkWinner(players);
+    const data = { winners: checkWinner(), players: players };
+    // checkWinner();
+    console.log(data);
   }
 };
