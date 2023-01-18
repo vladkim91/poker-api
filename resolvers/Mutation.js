@@ -536,22 +536,9 @@ exports.Mutation = {
     };
 
     /**
-     *
-     * @param {arrays of player hand arrays with a tied hand Strength} tiedPlayers
-     * @param {community Cards} cc
+     *Packages winners and players into and object and returns data request Object
+     *@returns data package with winner and all players
      */
-    const checkTie = (tiedPlayers, cc) => {
-      let winnerId = '';
-      // check High Card
-      // check Pair
-      // check Two Pair
-      // check Three of a kind
-      // check Straigth
-      // check Flush
-      // check Four of a kind
-      // check Straight Flush
-      return winnerId;
-    };
 
     const checkWinner = () => {
       const winnerIdx = compareHandStrength();
@@ -560,20 +547,14 @@ exports.Mutation = {
         for (let i of winnerIdx) {
           winners.push(players[i]);
         }
-        console.log(winners);
+
         return winners;
       } else if (typeof winnerIdx == 'number') {
-        return players[winnerIdx];
+        return [players[winnerIdx]];
       }
-
-      console
-        .log
-        // `Winner id ${players[winnerIdx].id} ${players[winnerIdx].handStrength} `
-        ();
-      // console.log(players);
     };
     const data = { winners: checkWinner(), players: players };
-    // checkWinner();
-    console.log(data);
+    console.log(data.winners);
+    return data;
   }
 };

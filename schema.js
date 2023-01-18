@@ -4,24 +4,38 @@ exports.typeDefs = gql`
     players: [Player!]!
   }
   type Mutation {
-    calcWinner(input: PlayerInput!): Hand!
+    calcWinner(input: PlayerInput!): Response!
   }
 
-  type Hand {
+  type Response {
     id: ID!
-    winners: Player!
+    winners: [Player!]!
     players: [Player!]!
   }
 
   type Player {
     id: ID!
-    cards: String!
+    hand: [String!]!
     handStrength: Int!
-    communityCards: String!
+    winningCombination: [String!]!
+    hasPair: Combination!
+    hasTwoPair: Combination!
+    hasThreeOfaKind: Combination!
+    hasStraight: Combination!
+    hasFlush: Combination!
+    hasFullHouse: Combination!
+    hasFourOfaKind: Combination!
+    hasStraightFlush: Combination!
+    hasRoyalFlush: Boolean!
+    typeOfFlush: String!
   }
 
   input PlayerInput {
     players: String!
+  }
+  type Combination {
+    made: Boolean!
+    highestCard: String
   }
   # type Product {
   #     id: ID!
