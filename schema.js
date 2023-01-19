@@ -37,6 +37,10 @@ exports.typeDefs = gql`
     made: Boolean!
     highestCard: String
   }
+
+  type Error {
+    type: String!
+  }
   # type Product {
   #     id: ID!
   #     name: String!

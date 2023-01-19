@@ -17,11 +17,63 @@ exports.Mutation = {
       K: 11,
       A: 12
     };
+    function createDeck() {
+      const suits = ['Heart', 'Spade', 'Diamond', 'Club'];
+      const cards = [
+        '2',
+        '3',
+        '4',
+        '5',
+        '6',
+        '7',
+        '8',
+        '9',
+        'T',
+        'J',
+        'Q',
+        'K',
+        'A'
+      ];
+      let deck = [];
+      for (let i = 0; i < suits.length; i++) {
+        for (let n = 0; n < cards.length; n++) {
+          let suitShort = suits[i].slice(0, 1);
+          deck.push(cards[n] + suitShort);
+        }
+      }
+      //function returns brand new deck
+      return deck;
+    }
+    /**
+     * Check if there are any duplicates in the deck
+     * @param card string with cc and player cards
+     * @return boolean
+     */
+    const checkIfValid = () => {
+      const brandNewDeck = createDeck();
+      const cardsChecked = [];
+      // split string into array of cards
+      const allCards = input.players
+        .split('/')
+        .map((cards) => cards.split('=')[1].split(','))
+        .flat();
+      // push every checked card into cardsCheckedArray
+      allCards.forEach((card) => {
+        cardsChecked.push(brandNewDeck[brandNewDeck.indexOf(card)]);
+      });
+      // remove duplicated if any are present
+      const setOfCards = new Set(cardsChecked);
+      return allCards.length == setOfCards.size;
+    };
+
+    const validCards = checkIfValid();
+    if (!validCards) throw new Error('Invalid Cards');
 
     /**
      * Splits string into CC and asign each player their cards
      * @param {front end payload with cc and players cards} string
      */
+
     const splitTheString = (cardsString) => {
       const cc = cardsString[0].slice(3).split(',');
       communityCards.push(cc);
@@ -161,33 +213,6 @@ exports.Mutation = {
        * Creates a fresh 52 card deck
        * @returns Full deck that is used to check straing combinations
        */
-      function createDeck() {
-        const suits = ['Heart', 'Spade', 'Diamond', 'Club'];
-        const cards = [
-          '2',
-          '3',
-          '4',
-          '5',
-          '6',
-          '7',
-          '8',
-          '9',
-          'T',
-          'J',
-          'Q',
-          'K',
-          'A'
-        ];
-        let deck = [];
-        for (let i = 0; i < suits.length; i++) {
-          for (let n = 0; n < cards.length; n++) {
-            let suitShort = suits[i].slice(0, 1);
-            deck.push(cards[n] + suitShort);
-          }
-        }
-        //function returns brand new deck
-        return deck;
-      }
 
       function checkStraight(hand) {
         // Check for straight
@@ -250,7 +275,6 @@ exports.Mutation = {
               const fiveFlushCards = hand.filter(
                 (card) => card[1] == flushSuit
               );
-              //   console.log(fiveFlushCards);
             }
           }
         }
@@ -530,9 +554,6 @@ exports.Mutation = {
 
         return players.findIndex((player) => player.id === winnerId);
       }
-      // else {
-      //   return
-      // }
     };
 
     /**
@@ -554,7 +575,7 @@ exports.Mutation = {
       }
     };
     const data = { winners: checkWinner(), players: players };
-    console.log(data.winners);
+
     return data;
   }
 };
