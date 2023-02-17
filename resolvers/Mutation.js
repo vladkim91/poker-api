@@ -472,14 +472,14 @@ exports.Mutation = {
             for (let i = 0; i < indices.length; i++) {
               cards.push(winnerScores[i][j]);
             }
+
             // Find max value of current set of hands
             const maxValue = Math.max(...cards);
-            const findWinningFive = (cards, maxValue) => {
+            const findWinningFive = (cards, idx) => {
               const everyCard = [
-                ...players[cards.indexOf(maxValue)].hand.concat(
-                  ...communityCards
-                )
+                ...players[idx].hand.concat(...communityCards)
               ];
+
               // find 5 best cards
 
               const bestFiveCardsToValuesSorted = everyCard
@@ -504,7 +504,7 @@ exports.Mutation = {
                 players[cards.indexOf(maxValue)].winningCombination.length == 0
               ) {
                 players[cards.indexOf(maxValue)].winningCombination.push(
-                  ...findWinningFive(cards, maxValue)
+                  ...findWinningFive(cards, cards.indexOf(maxValue))
                 );
               }
 
@@ -515,25 +515,62 @@ exports.Mutation = {
               !cards.every((card) => card == maxValue) &&
               cards.filter((card) => card == maxValue).length > 1
             ) {
-              // returns array
+              console.log(cards);
+
               const winnersIndices = cards
                 .map((card, idx) => {
                   if (card !== maxValue) return null;
                   else return idx;
                 })
                 .filter((idx) => idx !== null);
+              // Isolate the best 5 cards from all players and assign it to winning combination
               winnersIndices.forEach((idx) => {
                 if (players[idx].winningCombination.length == 0) {
                   players[idx].winningCombination.push(
-                    ...findWinningFive(cards, maxValue)
+                    ...findWinningFive(cards, idx)
                   );
                 }
               });
+              console.log(winnersIndices);
+              // Rank the score of 5 best cards and compare them
+              const highestFiveCardScore = new Array(winnersIndices.length);
 
-              return winnersIndices;
+              for (let i = 0; i < winnersIndices.length; i++) {
+                highestFiveCardScore[i] = players[
+                  winnersIndices[i]
+                ].winningCombination
+                  .map((card) => cardRanking[card[0]])
+                  .reduce((acc, cur) => acc + cur, 0);
+              }
+              // Check if not equal
+              console.log(highestFiveCardScore);
+              if (
+                highestFiveCardScore.length !==
+                new Set(highestFiveCardScore).size
+              ) {
+                console.log(winnersIndices);
+
+                return winnersIndices;
+              }
+              // Check if every combination is equal
+            } else if (cards.every((card) => (card = maxValue))) {
+              winnersIndices.forEach((idx) => {
+                if (players[idx].winningCombination.length == 0) {
+                  players[idx].winningCombination.push(
+                    ...findWinningFive(cards, idx)
+                  );
+                }
+              });
             }
           }
           // return all players
+          return indices;
+        };
+
+        const checkPairTie = (indices) => {
+          for (let idx of indices) {
+            console.log(players[idx]);
+          }
           return indices;
         };
 
@@ -541,6 +578,8 @@ exports.Mutation = {
         switch (highestStrength) {
           case 0:
             return checkHighCardTie(winnersIndices);
+          case 1:
+            return checkPairTie(winnersIndices);
         }
       } else {
         let winnerId;
