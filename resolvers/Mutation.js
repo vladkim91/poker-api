@@ -472,7 +472,7 @@ exports.Mutation = {
             for (let i = 0; i < indices.length; i++) {
               cards.push(winnerScores[i][j]);
             }
-            console.log(cards);
+            console.log(cards, 'cards');
 
             // Find max value of current set of hands
             const maxValue = Math.max(...cards);
@@ -483,7 +483,7 @@ exports.Mutation = {
               ];
 
               // find 5 best cards
-
+              // console.log(everyCard);
               const bestFiveCardsToValuesSorted = everyCard
                 .map((card) => {
                   return [cardRanking[card[0]], card[1]];
@@ -497,6 +497,7 @@ exports.Mutation = {
               return bestFiveCardsToValuesSorted;
             };
             // return index or indices of the players with the best winning combination
+            // IF 1 PLAYERS WINS
             if (
               !cards.every((card) => card == maxValue) &&
               cards.filter((card) => card == maxValue).length == 1
@@ -513,7 +514,8 @@ exports.Mutation = {
               // returns index of the winner
               return cards.indexOf(maxValue);
             } else if (
-              // If there's more than 1 winner with highest value
+              //
+              // IF THERE'S MORE than 1 winner with highest value
               !cards.every((card) => card == maxValue) &&
               cards.filter((card) => card == maxValue).length > 1
             ) {
@@ -543,19 +545,18 @@ exports.Mutation = {
                   .reduce((acc, cur) => acc + cur, 0);
               }
               // Check if not equal
-              console.log(highestFiveCardScore);
+              console.log(highestFiveCardScore, 'values');
+
               if (
                 highestFiveCardScore.length !==
                 new Set(highestFiveCardScore).size
               ) {
-                // console.log(winnersIndices);
+                console.log(highestFiveCardScore);
 
                 return winnersIndices;
               }
               // Check if every combination is equal
             } else if (cards.every((card) => card == maxValue)) {
-              console.log(cards, 556);
-
               winnersIndices.forEach((idx) => {
                 if (players[idx].winningCombination.length == 0) {
                   players[idx].winningCombination.push(
@@ -615,6 +616,7 @@ exports.Mutation = {
         return [players[winnerIdx]];
       }
     };
+
     const data = { winners: checkWinner(), players: players };
 
     return data;
