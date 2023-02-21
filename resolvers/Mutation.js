@@ -412,17 +412,18 @@ exports.Mutation = {
 
       return madeHands;
     }
-    // add hand strength to player array
-    for (let i in players) {
-      // players[i].handStrength = checkHand(
-      //   players[i].hand,
-      //   communityCards
-      // ).handStrength;
-      players[i] = {
-        ...players[i],
-        ...checkHand(players[i].hand, communityCards)
-      };
+    // add  madeHands object to everplayer player 
+    const assignCombinationsToPlayers = () => {
+      for (let i in players) {
+        players[i] = {
+          ...players[i],
+          ...checkHand(players[i].hand, communityCards)
+        };
+      }
     }
+
+    assignCombinationsToPlayers()
+
 
     /**
      * find identical hand strength and return a winner
@@ -605,6 +606,7 @@ exports.Mutation = {
     const checkWinner = () => {
       const winnerIdx = compareHandStrength();
       if (typeof winnerIdx == 'object') {
+
         const winners = [];
         for (let i of winnerIdx) {
           winners.push(players[i]);
@@ -615,7 +617,21 @@ exports.Mutation = {
         return [players[winnerIdx]];
       }
     };
-    const data = { winners: checkWinner(), players: players };
+
+    function createId(length) {
+      let result = '';
+      const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const charactersLength = characters.length;
+      let counter = 0;
+      while (counter < length) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+        counter += 1;
+      }
+      return result;
+    }
+    const data = { winners: checkWinner(), players: players, id: createId(20) };
+
+
 
     return data;
   }
