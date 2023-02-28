@@ -544,16 +544,33 @@ exports.Mutation = {
                   .map((card) => cardRanking[card[0]])
                   .reduce((acc, cur) => acc + cur, 0);
               }
+
+              // if (
+              //   highestFiveCardScore.filter(
+              //     (e) => e === Math.max(...highestFiveCardScore)
+              //   )
+              // ) {
+              //   return (
+              //     winnersIndices[
+              //       highestFiveCardScore.indexOf(
+              //         Math.max(...highestFiveCardScore)
+              //       )
+              //     ],
+              //     winnersIndices
+              //   );
+              // }
+
               // Check if not equal
-              console.log(highestFiveCardScore, 'values');
 
               if (
                 highestFiveCardScore.length !==
                 new Set(highestFiveCardScore).size
               ) {
-                console.log(highestFiveCardScore);
-
                 return winnersIndices;
+              } else {
+                return highestFiveCardScore.indexOf(
+                  Math.max(...highestFiveCardScore)
+                );
               }
               // Check if every combination is equal
             } else if (cards.every((card) => card == maxValue)) {
