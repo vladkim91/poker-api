@@ -17,6 +17,7 @@ exports.typeDefs = gql`
     id: ID!
     hand: [String!]!
     handStrength: Int!
+    winningComboValues: [Int!]!
     winningCombination: [String!]!
     hasPair: Combination!
     hasTwoPair: Combination!

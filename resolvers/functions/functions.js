@@ -70,6 +70,7 @@ const splitTheString = (cardsString) => {
     obj.hand = hand.split(',');
     playersArray.push(obj);
   }
+
   return [playersArray, communityCards];
 };
 
@@ -123,6 +124,7 @@ function checkHand(hand, cc) {
   const combinedHandArrayClone = [...combinedHandArray];
   const madeHands = {
     winningCombination: [],
+    winningComboValues: [],
     hasPair: { made: false, highestCard: null },
     hasTwoPair: { made: false, highestCard: null },
     hasThreeOfaKind: { made: false, highestCard: null },
