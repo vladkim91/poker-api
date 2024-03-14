@@ -1,3 +1,5 @@
+
+const { getCardByValue, findWinningFive } = require('../functions')
 const cardRanking = {
   2: 0,
   3: 1,
@@ -14,9 +16,7 @@ const cardRanking = {
   A: 12
 };
 // Reverse card value to playing cards
-const getCardByValue = (value) => {
-  return Object.keys(cardRanking).find((key) => cardRanking[key] === value);
-};
+
 const checkHighCardTie = (
   indices,
   strengthArray,
@@ -27,7 +27,7 @@ const checkHighCardTie = (
   const winnerScores = [];
   // Map winner combined hand arrays to winner scores array
   // console.log(indices, strengthArray, highestStrength, players, cc);
-  console.log(strengthArray.filter((e) => e === highestStrength).length);
+
   for (
     let i = 0;
     i < strengthArray.filter((e) => e === highestStrength).length;
@@ -53,23 +53,7 @@ const checkHighCardTie = (
     // Find max value of current set of hands
     const maxValue = Math.max(...cards);
 
-    const findWinningFive = (cards, idx) => {
-      const everyCard = [...players[idx].hand.concat(...cc)];
 
-      // find 5 best cards
-
-      const bestFiveCardsToValuesSorted = everyCard
-        .map((card) => {
-          return [cardRanking[card[0]], card[1]];
-        })
-        .sort((a, b) => b[0] - a[0])
-        .slice(0, 5)
-        .map((card) => {
-          return getCardByValue(card[0]) + card[1];
-        });
-
-      return bestFiveCardsToValuesSorted;
-    };
     // return index or indices of the players with the best winning combination
     // IF 1 PLAYERS WINS
 
@@ -80,7 +64,7 @@ const checkHighCardTie = (
       // add winning combo to the player with the best hand
       if (players[cards.indexOf(maxValue)].winningCombination.length == 0) {
         players[cards.indexOf(maxValue)].winningCombination.push(
-          ...findWinningFive(cards, cards.indexOf(maxValue))
+          ...findWinningFive(players, cards.indexOf(maxValue), ...cc)
         );
       }
 
@@ -100,11 +84,11 @@ const checkHighCardTie = (
         })
         .filter((idx) => idx !== null);
       // Isolate the best 5 cards from all players and assign it to winning combination
-
       winnersIndices.forEach((idx) => {
+
         if (players[idx].winningCombination.length == 0) {
-          players[idx].winningCombination.push(...findWinningFive(cards, idx));
-          const values = [...findWinningFive(cards, idx)].map(
+          players[idx].winningCombination.push(...findWinningFive(players, idx, ...cc));
+          const values = [...findWinningFive(players, idx, ...cc)].map(
             (card) => cardRanking[card[0]]
           );
           players[idx].winningComboValues.push(...values);
@@ -112,10 +96,6 @@ const checkHighCardTie = (
       });
 
       // Rank the score of 5 best cards and compare them
-
-      for (let i = 0; i < winnersIndices.length; i++) {
-        console.log(players[winnersIndices[i]].winningComboValues);
-      }
 
       function findTimeBreakerWinners(playerIndices) {
         // This will hold the index of the player with the currently winning hand

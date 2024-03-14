@@ -1,5 +1,20 @@
 const cards = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
 const suits = ['H', 'S', 'D', 'C'];
+const cardRanking = {
+  2: 0,
+  3: 1,
+  4: 2,
+  5: 3,
+  6: 4,
+  7: 5,
+  8: 6,
+  9: 7,
+  T: 8,
+  J: 9,
+  Q: 10,
+  K: 11,
+  A: 12
+};
 const createDeck = () => {
   let deck = [];
   for (let i = 0; i < suits.length; i++) {
@@ -11,13 +26,16 @@ const createDeck = () => {
   return deck;
 };
 
+const getCardByValue = (value) => {
+  return Object.keys(cardRanking).find((key) => cardRanking[key] === value);
+};
 /**
  * Check if there are any duplicates in the deck
  * @param card string with cc and player cards
  * @return boolean
  */
 const checkIfValid = (input) => {
-  console.log(input)
+
 
   const brandNewDeck = createDeck();
   // Combine players and cc in 1 array
@@ -395,8 +413,29 @@ const assignCombinationsToPlayers = (playersArray, cc) => {
     };
   }
 };
+const findWinningFive = (players, idx, cc) => {
+
+  const everyCard = [...players[idx].hand.concat(...cc)];
+  console.log(everyCard)
+
+  // find 5 best cards
+
+  const bestFiveCardsToValuesSorted = everyCard
+    .map((card) => {
+      return [cardRanking[card[0]], card[1]];
+    })
+    .sort((a, b) => b[0] - a[0])
+    .slice(0, 5)
+    .map((card) => {
+      return getCardByValue(card[0]) + card[1];
+    });
+
+  return bestFiveCardsToValuesSorted;
+};
 module.exports = {
   checkIfValid,
   splitTheString,
-  assignCombinationsToPlayers
+  assignCombinationsToPlayers,
+  getCardByValue,
+  findWinningFive
 };
