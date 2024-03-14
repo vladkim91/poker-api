@@ -48,10 +48,8 @@ const compareHandStrength = (players, cc) => {
         );
       case 1:
         return checkPairTie(winnersIndices,
-          strengthArray,
-          highestStrength,
           players,
-          cc);
+          ...cc);
     }
   } else {
     let winnerId;

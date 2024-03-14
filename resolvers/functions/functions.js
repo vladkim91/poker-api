@@ -145,7 +145,7 @@ function checkHand(hand, cc) {
   const madeHands = {
     winningCombination: [],
     winningComboValues: [],
-    hasPair: { made: false, highestCard: null },
+    hasPair: { made: false, highestCard: null, kickers: [] },
     hasTwoPair: { made: false, highestCard: null },
     hasThreeOfaKind: { made: false, highestCard: null },
     hasStraight: { made: false, highestCard: null },
@@ -170,9 +170,11 @@ function checkHand(hand, cc) {
           // Clone array is spliced to find second pair
           combinedHandArrayClone.splice(i, 1);
           combinedHandArrayClone.splice(n - 1, 1);
-          madeHands.hasPair.highestCard = hand[i][0];
+          madeHands.hasPair.kickers.push(...customSort(combinedHandArrayClone.sort()).slice(-3))
+          madeHands.hasPair.highestCard = hand[i];
           madeHands.hasPair.made = true;
           madeHands.handStrength = 1;
+
           break;
         }
       }
@@ -416,7 +418,7 @@ const assignCombinationsToPlayers = (playersArray, cc) => {
 const findWinningFive = (players, idx, cc) => {
 
   const everyCard = [...players[idx].hand.concat(...cc)];
-  console.log(everyCard)
+
 
   // find 5 best cards
 
@@ -437,5 +439,6 @@ module.exports = {
   splitTheString,
   assignCombinationsToPlayers,
   getCardByValue,
-  findWinningFive
+  findWinningFive,
+  customSort
 };

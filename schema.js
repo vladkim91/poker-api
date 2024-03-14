@@ -40,7 +40,8 @@ exports.typeDefs = gql`
   }
   type Combination {
     made: Boolean!
-    kicker: String
+    kickers: [String!]!
+    highestCard: String
   }
 
   type Error {
