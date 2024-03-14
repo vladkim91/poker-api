@@ -17,9 +17,11 @@ const createDeck = () => {
  * @return boolean
  */
 const checkIfValid = (input) => {
+  console.log(input)
+
   const brandNewDeck = createDeck();
   // Combine players and cc in 1 array
-  const allCards = input.players
+  const allCards = input
     .split('/')
     .map((cards) => cards.split('=')[1].split(','))
     .flat();

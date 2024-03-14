@@ -4,13 +4,17 @@ exports.typeDefs = gql`
     players: [Player!]!
   }
   type Mutation {
-    calcWinner(input: PlayerInput!): Response!
+    calcWinner(input: PlayerInput!): [Response!]
   }
 
   type Response {
     id: ID!
     winners: [Player!]!
     players: [Player!]!
+  }
+
+  type ResponseArray {
+    games: [Response]
   }
 
   type Player {
@@ -32,11 +36,11 @@ exports.typeDefs = gql`
   }
 
   input PlayerInput {
-    players: String!
+    playerInput: [String!]
   }
   type Combination {
     made: Boolean!
-    highestCard: String
+    kicker: String
   }
 
   type Error {
