@@ -45,6 +45,7 @@ const checkIfValid = (input) => {
     .flat();
 
   const checkInvalidCards = () => {
+
     const cardsChecked = [];
     // split string into array of cards
 
@@ -58,8 +59,8 @@ const checkIfValid = (input) => {
 
     // remove duplicated if any are present
     const setOfCards = new Set(cardsChecked);
-
-    return allCards.length == setOfCards.size;
+    if (allCards.length !== setOfCards.size) console.log(allCards, 'duplicate found')
+    return allCards.length == setOfCards.size
   };
 
   const checkHandLength = () => {

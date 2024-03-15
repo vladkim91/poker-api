@@ -77,18 +77,22 @@ const checkPairTie = (indices,
     }
 
     const findPairAndKickers = (player, cc) => {
-
-
-        if (player.hand.includes(player.hasPair.highestCard)) {
-            const madePair = [player.hasPair.highestCard, cc.find(card => card[0] === player.hasPair.highestCard[0])]
-            const kickersWithSuits = []
-            player.hasPair.kickers.map(card => {
-
-            })
-
-
-
+        const kickersWithSuits = []
+        const allCards = [...player.hand, ...cc]
+        for (let i = 0; i < 3; i++) {
+            kickersWithSuits.push(allCards.find(card => card[0] == player.hasPair.kickers[i]))
         }
+        let madePair;
+        if (player.hand.includes(player.hasPair.highestCard)) {
+            madePair = [player.hasPair.highestCard, cc.find(card => card[0] === player.hasPair.highestCard[0])]
+
+
+        } else {
+            madePair = [player.hasPair.highestCard, cc.find(card => {
+                return (card[0] === player.hasPair.highestCard[0] && card[1] !== player.hasPair.highestCard[1])
+            })]
+        }
+        return madePair.concat(kickersWithSuits)
 
         // const copy = [...cc].findIndex(card => card[0] === highestCard[0])
         // console.log(copy, madePair)
@@ -99,11 +103,7 @@ const checkPairTie = (indices,
 
     // Return all indices if tied on all kickers or the single winner
     for (let playerIdx of finalWinners) {
-        const winningCombination = []
-        const playerAndCC = [...players[playerIdx].hand].concat(...cc)
-
-        findPairAndKickers(players[playerIdx], cc)
-
+        players[playerIdx].winningCombination = findPairAndKickers(players[playerIdx], cc)
     }
     return finalWinners;
 }

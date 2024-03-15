@@ -8,14 +8,14 @@ const { compareHandStrength } = require('./functions/compareHandStrength.js');
 
 exports.Mutation = {
   calcWinner: (parent, { input }, context) => {
-
-
     const data = []
     for (let i = 0; i < input.playerInput.length; i++) {
-      // console.log(input.playerInput[i])
-      if (!checkIfValid(input.playerInput[i])) throw new Error('Invalid Cards');
-      // console.log(input.playerInput[i])
-      // if (!checkIfValid(arr[i])) throw new Error('Invalid Cards');
+
+      if (!checkIfValid(input.playerInput[i])) {
+        throw new Error('Invalid Cards')
+      };
+
+
 
       const [players, communityCards] = splitTheString(input.playerInput[i].split('/'));
       // const [players, communityCards] = splitTheString(arr[i].players.split('/'));
