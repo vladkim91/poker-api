@@ -26,7 +26,7 @@ const checkHighCardTie = (
 ) => {
   const winnerScores = [];
   // Map winner combined hand arrays to winner scores array
-  // console.log(indices, strengthArray, highestStrength, players, cc);
+
 
   for (
     let i = 0;
@@ -97,7 +97,7 @@ const checkHighCardTie = (
 
       // Rank the score of 5 best cards and compare them
 
-      function findTimeBreakerWinners(playerIndices) {
+      function findTieBreakerWinners(playerIndices) {
         // This will hold the index of the player with the currently winning hand
         let winningIndex = playerIndices[0];
 
@@ -135,7 +135,7 @@ const checkHighCardTie = (
         // If somehow we get here, default to the first player (shouldn't happen with proper input)
         return winningIndex;
       }
-      return findTimeBreakerWinners(winnersIndices);
+      return findTieBreakerWinners(winnersIndices);
     }
   }
 

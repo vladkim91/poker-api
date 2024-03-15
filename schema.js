@@ -23,14 +23,14 @@ exports.typeDefs = gql`
     handStrength: Int!
     winningComboValues: [Int!]
     winningCombination: [String!]
-    hasPair: Combination!
-    hasTwoPair: Combination!
-    hasThreeOfaKind: Combination!
-    hasStraight: Combination!
-    hasFlush: Combination!
-    hasFullHouse: Combination!
-    hasFourOfaKind: Combination!
-    hasStraightFlush: Combination!
+    hasPair: PairCombination!
+    hasTwoPair: TwoPairCombination!
+    # hasThreeOfaKind: Combination!
+    # hasStraight: Combination!
+    # hasFlush: Combination!
+    # hasFullHouse: Combination!
+    # hasFourOfaKind: Combination!
+    # hasStraightFlush: Combination!
     hasRoyalFlush: Boolean!
     typeOfFlush: String!
   }
@@ -38,10 +38,16 @@ exports.typeDefs = gql`
   input PlayerInput {
     playerInput: [String!]
   }
-  type Combination {
+  type PairCombination {
     made: Boolean!
     kickers: [String!]!
     highestCard: String
+  }
+
+  type TwoPairCombination {
+    made: Boolean!
+    kicker: String
+    twoPairMade: [String]
   }
 
   type Error {

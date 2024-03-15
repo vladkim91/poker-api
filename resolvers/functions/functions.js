@@ -147,7 +147,7 @@ function checkHand(hand, cc) {
     winningCombination: [],
     winningComboValues: [],
     hasPair: { made: false, highestCard: null, kickers: [] },
-    hasTwoPair: { made: false, highestCard: null },
+    hasTwoPair: { made: false, kicker: '', twoPairMade: [] },
     hasThreeOfaKind: { made: false, highestCard: null },
     hasStraight: { made: false, highestCard: null },
     hasFlush: { made: false, highestCard: null },
@@ -174,6 +174,7 @@ function checkHand(hand, cc) {
           madeHands.hasPair.kickers.push(...customSort(combinedHandArrayClone.sort()).slice(-3))
           madeHands.hasPair.highestCard = hand[i];
           madeHands.hasPair.made = true;
+          madeHands.hasTwoPair.twoPairMade.push(hand[i], hand[n])
           madeHands.handStrength = 1;
 
           break;
@@ -189,9 +190,17 @@ function checkHand(hand, cc) {
           hand[i][0] == hand[n][0] &&
           i != n
         ) {
+
+
           madeHands.hasTwoPair.made = true;
           madeHands.handStrength = 2;
-          madeHands.hasTwoPair.highestCard = hand[i][0];
+          madeHands.hasTwoPair.twoPairMade.push(hand[i], hand[n]);
+          combinedHandArrayClone.splice(i, 1);
+          combinedHandArrayClone.splice(n - 1, 1);
+          madeHands.hasTwoPair.kicker = customSort(combinedHandArrayClone)[combinedHandArrayClone.length - 1]
+          // madeHands.hasTwoPair.kicker = customSort(combinedHandArrayClone.sort()).slice(-1)
+
+
 
           break;
         }

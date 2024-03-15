@@ -1,5 +1,6 @@
 const { checkHighCardTie, } = require('./tieBreakerFunctions/checkHighCardTie');
 const { checkPairTie, } = require('./tieBreakerFunctions/checkPairTie');
+const { checkTwoPairTie } = require('./tieBreakerFunctions/checkTwoPairTie')
 const cardRanking = {
   2: 0,
   3: 1,
@@ -50,6 +51,8 @@ const compareHandStrength = (players, cc) => {
         return checkPairTie(winnersIndices,
           players,
           ...cc);
+      case 2:
+        return checkTwoPairTie(winnersIndices, players, ...cc);
     }
   } else {
     let winnerId;

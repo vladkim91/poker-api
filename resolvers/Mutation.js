@@ -18,7 +18,7 @@ exports.Mutation = {
 
 
       const [players, communityCards] = splitTheString(input.playerInput[i].split('/'));
-      // const [players, communityCards] = splitTheString(arr[i].players.split('/'));
+
 
       // add  madeHands object to everplayer player
 

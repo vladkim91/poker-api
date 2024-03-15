@@ -19,7 +19,7 @@ const cardRanking = {
 const checkPairTie = (indices,
     players,
     cc) => {
-    console.log(indices)
+
 
     // Determine the best pair among the players and collect those with the highest pair
     let highestPairRank = -1;
@@ -93,12 +93,6 @@ const checkPairTie = (indices,
             })]
         }
         return madePair.concat(kickersWithSuits)
-
-        // const copy = [...cc].findIndex(card => card[0] === highestCard[0])
-        // console.log(copy, madePair)
-
-
-        // console.log(kickersWithSuits)
     }
 
     // Return all indices if tied on all kickers or the single winner
