@@ -19,6 +19,10 @@ const checkPairTie = (indices, players, cc) => {
 
   // If there's no tie, return the winner
   if (contenders.length === 1) {
+    players[contenders[0]].winningCombination = findPairAndKickers(
+      players[contenders[0]],
+      cc
+    );
     return [contenders[0]];
   }
 
@@ -55,36 +59,7 @@ const checkPairTie = (indices, players, cc) => {
     }
   }
 
-  const findPairAndKickers = (player, cc) => {
-    const kickersWithSuits = [];
-    const allCards = [...player.hand, ...cc];
-    for (let i = 0; i < 3; i++) {
-      kickersWithSuits.push(
-        allCards.find((card) => card[0] == player.hasPair.kickers[i])
-      );
-    }
-    let madePair;
-    if (player.hand.includes(player.hasPair.highestCard)) {
-      madePair = [
-        player.hasPair.highestCard,
-        cc.find((card) => card[0] === player.hasPair.highestCard[0])
-      ];
-    } else {
-      madePair = [
-        player.hasPair.highestCard,
-        cc.find((card) => {
-          return (
-            card[0] === player.hasPair.highestCard[0] &&
-            card[1] !== player.hasPair.highestCard[1]
-          );
-        })
-      ];
-    }
-    return madePair.concat(kickersWithSuits);
-  };
-
   // Return all indices if tied on all kickers or the single winner
-
   for (let playerIdx of finalWinners) {
     players[playerIdx].winningCombination = findPairAndKickers(
       players[playerIdx],
@@ -94,4 +69,32 @@ const checkPairTie = (indices, players, cc) => {
   return finalWinners;
 };
 
-module.exports = { checkPairTie };
+const findPairAndKickers = (player, cc) => {
+  const kickersWithSuits = [];
+  const allCards = [...player.hand, ...cc];
+  for (let i = 0; i < 3; i++) {
+    kickersWithSuits.push(
+      allCards.find((card) => card[0] == player.hasPair.kickers[i])
+    );
+  }
+  let madePair;
+  if (player.hand.includes(player.hasPair.highestCard)) {
+    madePair = [
+      player.hasPair.highestCard,
+      cc.find((card) => card[0] === player.hasPair.highestCard[0])
+    ];
+  } else {
+    madePair = [
+      player.hasPair.highestCard,
+      cc.find((card) => {
+        return (
+          card[0] === player.hasPair.highestCard[0] &&
+          card[1] !== player.hasPair.highestCard[1]
+        );
+      })
+    ];
+  }
+  return madePair.concat(kickersWithSuits);
+};
+
+module.exports = { checkPairTie, findPairAndKickers };

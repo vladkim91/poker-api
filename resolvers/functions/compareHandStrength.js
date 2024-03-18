@@ -1,5 +1,8 @@
 const { checkHighCardTie } = require('./tieBreakerFunctions/checkHighCardTie');
-const { checkPairTie } = require('./tieBreakerFunctions/checkPairTie');
+const {
+  checkPairTie,
+  findPairAndKickers
+} = require('./tieBreakerFunctions/checkPairTie');
 const { checkTwoPairTie } = require('./tieBreakerFunctions/checkTwoPairTie');
 
 const compareHandStrength = (players, cc) => {
@@ -43,7 +46,19 @@ const compareHandStrength = (players, cc) => {
       }
     }
 
+    assignWinningCombination(
+      players.find((player) => player.id === winnerId),
+      cc
+    );
+
     return players.findIndex((player) => player.id === winnerId);
+  }
+};
+
+const assignWinningCombination = (winner, cc) => {
+  switch (winner.handStrength) {
+    case 1:
+      winner.winningCombination = findPairAndKickers(winner, cc);
   }
 };
 

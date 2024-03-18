@@ -139,7 +139,6 @@ const checkCombinationFunctions = {
           madeHands.hasPair.made = true;
           madeHands.hasTwoPair.twoPairMade.push(hand[i], hand[n]);
           madeHands.handStrength = 1;
-
           break;
         }
       }
