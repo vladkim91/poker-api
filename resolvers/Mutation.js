@@ -20,7 +20,7 @@ exports.Mutation = {
 
       // add  madeHands object to everplayer player
 
-      assignCombinationsToPlayers(players, communityCards);
+      assignCombinationsToPlayers(players, ...communityCards);
 
       /**
        *Packages winners and players into and object and returns data request Object
@@ -28,7 +28,7 @@ exports.Mutation = {
        */
 
       const checkWinner = () => {
-        const winnerIdx = compareHandStrength(players, communityCards);
+        const winnerIdx = compareHandStrength(players, ...communityCards);
         if (typeof winnerIdx == 'object') {
           const winners = [];
           for (let i of winnerIdx) {

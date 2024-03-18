@@ -377,7 +377,7 @@ const checkCombinationFunctions = {
  * @param {array with 3 to 5 communityCards array} cc
  * @returns made hands object that describes the strongest combination the player will have in the showdown
  */
-function checkHand(hand, cc) {
+const checkHand = (hand, cc) => {
   let combinedHand = hand.concat(cc.join(',')).join(',');
   let combinedHandArray = combinedHand.split(',');
   const combinedHandArrayClone = [...combinedHandArray];
@@ -403,7 +403,7 @@ function checkHand(hand, cc) {
   );
 
   return madeHands;
-}
+};
 
 const assignCombinationsToPlayers = (playersArray, cc) => {
   for (let i in playersArray) {
@@ -418,7 +418,6 @@ module.exports = {
   checkIfValid,
   cardConversions,
   assignCombinationsToPlayers,
-
   customSort,
   cardSuitRanking
 };

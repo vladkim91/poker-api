@@ -20,7 +20,7 @@ const checkHighCardTie = (
     // convert player hands into points arrays
     winnerScores.push(
       players[indices[i]].hand
-        .concat(...cc)
+        .concat(cc)
         .map((card) => cardSuitRanking.cardRanking[card[0]])
         .sort((a, b) => b - a)
     );
@@ -47,7 +47,7 @@ const checkHighCardTie = (
       // add winning combo to the player with the best hand
       if (players[cards.indexOf(maxValue)].winningCombination.length == 0) {
         players[cards.indexOf(maxValue)].winningCombination.push(
-          ...findWinningFive(players, cards.indexOf(maxValue), ...cc)
+          ...findWinningFive(players, cards.indexOf(maxValue), cc)
         );
       }
 
@@ -70,9 +70,9 @@ const checkHighCardTie = (
       winnersIndices.forEach((idx) => {
         if (players[idx].winningCombination.length == 0) {
           players[idx].winningCombination.push(
-            ...findWinningFive(players, idx, ...cc)
+            ...findWinningFive(players, idx, cc)
           );
-          const values = [...findWinningFive(players, idx, ...cc)].map(
+          const values = [...findWinningFive(players, idx, cc)].map(
             (card) => cardSuitRanking.cardRanking[card[0]]
           );
           players[idx].winningComboValues.push(...values);
@@ -124,8 +124,10 @@ const checkHighCardTie = (
   }
 
   const assignWinningCombinationsToAll = (playerIndices) => {
+    // console.log(cc);
+    console.log('test');
     playerIndices.forEach((idx) => {
-      const bestFiveCardsToValuesSorted = [...players[idx].hand.concat(...cc)]
+      const bestFiveCardsToValuesSorted = [...players[idx].hand.concat(cc)]
         .map((card) => {
           return [cardSuitRanking.cardRanking[card[0]], card[1]]; // Map card to its rank and suit
         })
@@ -152,7 +154,7 @@ const checkHighCardTie = (
 };
 
 const findWinningFive = (players, idx, cc) => {
-  const everyCard = [...players[idx].hand.concat(...cc)];
+  const everyCard = [...players[idx].hand.concat(cc)];
   const bestFiveCardsToValuesSorted = everyCard
     .map((card) => {
       return [cardSuitRanking.cardRanking[card[0]], card[1]];

@@ -29,9 +29,9 @@ const compareHandStrength = (players, cc) => {
           cc
         );
       case 1:
-        return checkPairTie(winnersIndices, players, ...cc);
+        return checkPairTie(winnersIndices, players, cc);
       case 2:
-        return checkTwoPairTie(winnersIndices, players, ...cc);
+        return checkTwoPairTie(winnersIndices, players, cc);
     }
   } else {
     let winnerId;

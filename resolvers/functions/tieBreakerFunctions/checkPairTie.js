@@ -1,6 +1,7 @@
 const { cardSuitRanking } = require('../functions');
 const checkPairTie = (indices, players, cc) => {
   // Determine the best pair among the players and collect those with the highest pair
+
   let highestPairRank = -1;
   let contenders = [];
 
@@ -83,6 +84,7 @@ const checkPairTie = (indices, players, cc) => {
   };
 
   // Return all indices if tied on all kickers or the single winner
+
   for (let playerIdx of finalWinners) {
     players[playerIdx].winningCombination = findPairAndKickers(
       players[playerIdx],
