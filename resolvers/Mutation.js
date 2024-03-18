@@ -1,6 +1,6 @@
 const {
   checkIfValid,
-  splitTheString,
+  cardConversions,
   assignCombinationsToPlayers
 } = require('./functions/functions.js');
 
@@ -8,17 +8,15 @@ const { compareHandStrength } = require('./functions/compareHandStrength.js');
 
 exports.Mutation = {
   calcWinner: (parent, { input }, context) => {
-    const data = []
+    const data = [];
     for (let i = 0; i < input.playerInput.length; i++) {
-
       if (!checkIfValid(input.playerInput[i])) {
-        throw new Error('Invalid Cards')
-      };
+        throw new Error('Invalid Cards');
+      }
 
-
-
-      const [players, communityCards] = splitTheString(input.playerInput[i].split('/'));
-
+      const [players, communityCards] = cardConversions.splitTheString(
+        input.playerInput[i].split('/')
+      );
 
       // add  madeHands object to everplayer player
 
@@ -58,9 +56,8 @@ exports.Mutation = {
         return result;
       }
       // const data = { winners: checkWinner(), players: players, id: createId(20) };
-      data.push({ winners: checkWinner(), players: players, id: createId(20) })
+      data.push({ winners: checkWinner(), players: players, id: createId(20) });
     }
     return data;
   }
 };
-

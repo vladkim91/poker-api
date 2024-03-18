@@ -1,25 +1,8 @@
-const { checkHighCardTie, } = require('./tieBreakerFunctions/checkHighCardTie');
-const { checkPairTie, } = require('./tieBreakerFunctions/checkPairTie');
-const { checkTwoPairTie } = require('./tieBreakerFunctions/checkTwoPairTie')
-const cardRanking = {
-  2: 0,
-  3: 1,
-  4: 2,
-  5: 3,
-  6: 4,
-  7: 5,
-  8: 6,
-  9: 7,
-  T: 8,
-  J: 9,
-  Q: 10,
-  K: 11,
-  A: 12
-};
-// Reverse card value to playing cards
-const getCardByValue = (value) => {
-  return Object.keys(cardRanking).find((key) => cardRanking[key] === value);
-};
+const { checkHighCardTie } = require('./tieBreakerFunctions/checkHighCardTie');
+const { checkPairTie } = require('./tieBreakerFunctions/checkPairTie');
+const { checkTwoPairTie } = require('./tieBreakerFunctions/checkTwoPairTie');
+const { cardSuitRanking } = require('./functions');
+
 const compareHandStrength = (players, cc) => {
   // Isolate hand strength from array of all players
   const strengthArray = Object.values(players).map((e) => e.handStrength);
@@ -48,9 +31,7 @@ const compareHandStrength = (players, cc) => {
           cc
         );
       case 1:
-        return checkPairTie(winnersIndices,
-          players,
-          ...cc);
+        return checkPairTie(winnersIndices, players, ...cc);
       case 2:
         return checkTwoPairTie(winnersIndices, players, ...cc);
     }

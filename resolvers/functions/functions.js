@@ -1,43 +1,57 @@
-const cards = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
-const suits = ['H', 'S', 'D', 'C'];
-const cardRanking = {
-  2: 0,
-  3: 1,
-  4: 2,
-  5: 3,
-  6: 4,
-  7: 5,
-  8: 6,
-  9: 7,
-  T: 8,
-  J: 9,
-  Q: 10,
-  K: 11,
-  A: 12
-};
-const createDeck = () => {
-  let deck = [];
-  for (let i = 0; i < suits.length; i++) {
-    for (let n = 0; n < cards.length; n++) {
-      deck.push(cards[n] + suits[i]);
-    }
+const cardSuitRanking = {
+  cards: ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'],
+  suits: ['H', 'S', 'D', 'C'],
+  cardRanking: {
+    2: 0,
+    3: 1,
+    4: 2,
+    5: 3,
+    6: 4,
+    7: 5,
+    8: 6,
+    9: 7,
+    T: 8,
+    J: 9,
+    Q: 10,
+    K: 11,
+    A: 12
   }
-  //function returns brand new deck
-  return deck;
 };
+const cardConversions = {
+  createDeck() {
+    let deck = [];
+    for (let i = 0; i < cardSuitRanking.suits.length; i++) {
+      for (let n = 0; n < cardSuitRanking.cards.length; n++) {
+        deck.push(cardSuitRanking.cards[n] + cardSuitRanking.suits[i]);
+      }
+    }
 
-const getCardByValue = (value) => {
-  return Object.keys(cardRanking).find((key) => cardRanking[key] === value);
+    return deck;
+  },
+  splitTheString(cardsString) {
+    const playersArray = [];
+    const communityCards = [];
+    const cc = cardsString[0].slice(3).split(',');
+    communityCards.push(cc);
+    for (let i = 1; i < cardsString.length; i++) {
+      const playerString = cardsString[i].split('=');
+      const obj = {};
+      const [id, hand] = playerString;
+      obj.id = id;
+      obj.hand = hand.split(',');
+      playersArray.push(obj);
+    }
+
+    return [playersArray, communityCards];
+  },
+  getCardByValue(value) {
+    return Object.keys(cardSuitRanking.cardRanking).find(
+      (key) => cardSuitRanking.cardRanking[key] === value
+    );
+  }
 };
-/**
- * Check if there are any duplicates in the deck
- * @param card string with cc and player cards
- * @return boolean
- */
 const checkIfValid = (input) => {
-
-
-  const brandNewDeck = createDeck();
+  const brandNewDeck = cardConversions.createDeck();
   // Combine players and cc in 1 array
   const allCards = input
     .split('/')
@@ -45,7 +59,6 @@ const checkIfValid = (input) => {
     .flat();
 
   const checkInvalidCards = () => {
-
     const cardsChecked = [];
     // split string into array of cards
 
@@ -59,8 +72,9 @@ const checkIfValid = (input) => {
 
     // remove duplicated if any are present
     const setOfCards = new Set(cardsChecked);
-    if (allCards.length !== setOfCards.size) console.log(allCards, 'duplicate found')
-    return allCards.length == setOfCards.size
+    if (allCards.length !== setOfCards.size)
+      console.log(allCards, 'duplicate found');
+    return allCards.length == setOfCards.size;
   };
 
   const checkHandLength = () => {
@@ -72,34 +86,6 @@ const checkIfValid = (input) => {
   return checkInvalidCards() ? checkHandLength() : false;
 };
 
-/**
- * Splits string into CC and asign each player their cards
- * @param {front end payload with cc and players cards} string
- * @return players and community cards array with asigned hands and IDs
- */
-
-const splitTheString = (cardsString) => {
-  const playersArray = [];
-  const communityCards = [];
-  const cc = cardsString[0].slice(3).split(',');
-  communityCards.push(cc);
-  for (let i = 1; i < cardsString.length; i++) {
-    const playerString = cardsString[i].split('=');
-    const obj = {};
-    const [id, hand] = playerString;
-    obj.id = id;
-    obj.hand = hand.split(',');
-    playersArray.push(obj);
-  }
-
-  return [playersArray, communityCards];
-};
-
-/**
- * Custom sorts array to be in card deck order
- * @param {array of combined player and cc} sortedArray
- * @returns sorted array in proper deck order (including Letter cards)
- */
 function customSort(sortedArray) {
   const tempPlaceHolder = [];
   for (let i = 0; i < sortedArray.length; i++) {
@@ -133,33 +119,8 @@ function customSort(sortedArray) {
   return noDuplicateTemp;
 }
 
-/**
- * Major function that checks every combination in player's hand + cc
- * @param {array of 2 players cards } hand
- * @param {array with 3 to 5 communityCards array} cc
- * @returns made hands object that describes the strongest combination the player will have in the showdown
- */
-function checkHand(hand, cc) {
-  let combinedHand = hand.concat(cc.join(',')).join(',');
-  let combinedHandArray = combinedHand.split(',');
-  const combinedHandArrayClone = [...combinedHandArray];
-  const madeHands = {
-    winningCombination: [],
-    winningComboValues: [],
-    hasPair: { made: false, highestCard: null, kickers: [] },
-    hasTwoPair: { made: false, kicker: '', twoPairMade: [] },
-    hasThreeOfaKind: { made: false, highestCard: null },
-    hasStraight: { made: false, highestCard: null },
-    hasFlush: { made: false, highestCard: null },
-    hasFullHouse: { made: false, highestCard: null },
-    hasFourOfaKind: { made: false, highestCard: null },
-    hasStraightFlush: { made: false, highestCard: null },
-    hasRoyalFlush: false,
-    handStrength: 0,
-    typeOfFlush: ''
-  };
-
-  function checkPair(hand) {
+const checkCombinationFunctions = {
+  checkPair(hand, madeHands, combinedHandArrayClone) {
     for (let i = 0; i < hand.length; i++) {
       for (let n = 0; n < hand.length; n++) {
         if (
@@ -171,18 +132,20 @@ function checkHand(hand, cc) {
           // Clone array is spliced to find second pair
           combinedHandArrayClone.splice(i, 1);
           combinedHandArrayClone.splice(n - 1, 1);
-          madeHands.hasPair.kickers.push(...customSort(combinedHandArrayClone.sort()).slice(-3))
+          madeHands.hasPair.kickers.push(
+            ...customSort(combinedHandArrayClone.sort()).slice(-3)
+          );
           madeHands.hasPair.highestCard = hand[i];
           madeHands.hasPair.made = true;
-          madeHands.hasTwoPair.twoPairMade.push(hand[i], hand[n])
+          madeHands.hasTwoPair.twoPairMade.push(hand[i], hand[n]);
           madeHands.handStrength = 1;
 
           break;
         }
       }
     }
-  }
-  function checkTwoPair(hand) {
+  },
+  checkTwoPair(hand, madeHands) {
     for (let i = 0; i < hand.length; i++) {
       for (let n = 0; n < hand.length; n++) {
         if (
@@ -190,24 +153,22 @@ function checkHand(hand, cc) {
           hand[i][0] == hand[n][0] &&
           i != n
         ) {
-
-
           madeHands.hasTwoPair.made = true;
           madeHands.handStrength = 2;
           madeHands.hasTwoPair.twoPairMade.push(hand[i], hand[n]);
           combinedHandArrayClone.splice(i, 1);
           combinedHandArrayClone.splice(n - 1, 1);
-          madeHands.hasTwoPair.kicker = customSort(combinedHandArrayClone)[combinedHandArrayClone.length - 1]
+          madeHands.hasTwoPair.kicker = customSort(combinedHandArrayClone)[
+            combinedHandArrayClone.length - 1
+          ];
           // madeHands.hasTwoPair.kicker = customSort(combinedHandArrayClone.sort()).slice(-1)
-
-
 
           break;
         }
       }
     }
-  }
-  function checkThreeOfaKind(hand) {
+  },
+  checkThreeOfaKind(hand, madeHands) {
     for (let i = 0; i < hand.length; i++) {
       for (let n = 0; n < hand.length; n++) {
         for (let y = 0; y < hand.length; y++) {
@@ -227,16 +188,12 @@ function checkHand(hand, cc) {
         }
       }
     }
-  }
-  /**
-   * Creates a fresh 52 card deck
-   * @returns Full deck that is used to check straing combinations
-   */
+  },
 
-  function checkStraight(hand) {
+  checkStraight(hand, madeHands) {
     // Check for straight
     // 14 cards without suits with A in the beginning
-    let thirteenCardsInOrder = createDeck().slice(0, 13);
+    let thirteenCardsInOrder = cardConversions.createDeck().slice(0, 13);
     let thirteenCardsWithoutSuit = [];
     thirteenCardsInOrder.forEach(removeSuit);
     function removeSuit(item, index, arr) {
@@ -264,8 +221,8 @@ function checkHand(hand, cc) {
         }
       }
     }
-  }
-  function checkFlush(hand) {
+  },
+  checkFlush(hand, madeHands) {
     const suitCounter = { hearts: 0, spades: 0, clubs: 0, diamonds: 0 };
     let flushSuit = '';
     for (let i = 0; i < hand.length; i++) {
@@ -292,8 +249,8 @@ function checkHand(hand, cc) {
         }
       }
     }
-  }
-  function checkFullHouse() {
+  },
+  checkFullHouse(madeHands) {
     if (
       madeHands.hasTwoPair.made == true &&
       madeHands.hasThreeOfaKind.made == true
@@ -301,8 +258,8 @@ function checkHand(hand, cc) {
       madeHands.hasFullHouse.made = true;
       madeHands.handStrength = 6;
     }
-  }
-  function checkFourOfaKind(hand) {
+  },
+  checkFourOfaKind(hand, madeHands) {
     for (let i = 0; i < hand.length; i++) {
       for (let n = 0; n < hand.length; n++) {
         if (hand[i][0] == hand[n][0] && i != n) {
@@ -320,9 +277,9 @@ function checkHand(hand, cc) {
         }
       }
     }
-  }
+  },
 
-  function checkStraightRoyalFlush(hand) {
+  checkStraightRoyalFlush(hand, madeHands) {
     const tempFlush = [];
     if (madeHands.hasStraight.made && madeHands.hasFlush.made) {
       switch (madeHands.typeOfFlush) {
@@ -400,20 +357,51 @@ function checkHand(hand, cc) {
         }
       }
     }
-  }
-  const checkEveryCombination = () => {
-    checkPair(combinedHandArray);
-    checkTwoPair(combinedHandArrayClone);
-    checkThreeOfaKind(combinedHandArray);
-    checkStraight(combinedHandArray);
-    checkFlush(combinedHandArray);
-    checkFullHouse();
-    checkFourOfaKind(combinedHandArray);
-    checkStraightRoyalFlush(combinedHandArray);
-    // Check if player made any hand? If not find his highest card
-  };
+  },
 
-  checkEveryCombination();
+  checkEveryCombination(combinedHandArray, madeHands, combinedHandArrayClone) {
+    this.checkPair(combinedHandArray, madeHands, combinedHandArrayClone);
+    this.checkTwoPair(combinedHandArrayClone, madeHands);
+    this.checkThreeOfaKind(combinedHandArray, madeHands);
+    this.checkStraight(combinedHandArray, madeHands);
+    this.checkFlush(combinedHandArray, madeHands);
+    this.checkFullHouse(madeHands);
+    this.checkFourOfaKind(combinedHandArray, madeHands);
+    this.checkStraightRoyalFlush(combinedHandArray, madeHands);
+  }
+};
+
+/**
+ * Major function that checks every combination in player's hand + cc
+ * @param {array of 2 players cards } hand
+ * @param {array with 3 to 5 communityCards array} cc
+ * @returns made hands object that describes the strongest combination the player will have in the showdown
+ */
+function checkHand(hand, cc) {
+  let combinedHand = hand.concat(cc.join(',')).join(',');
+  let combinedHandArray = combinedHand.split(',');
+  const combinedHandArrayClone = [...combinedHandArray];
+  const madeHands = {
+    winningCombination: [],
+    winningComboValues: [],
+    hasPair: { made: false, highestCard: null, kickers: [] },
+    hasTwoPair: { made: false, kicker: '', twoPairMade: [] },
+    hasThreeOfaKind: { made: false, highestCard: null },
+    hasStraight: { made: false, highestCard: null },
+    hasFlush: { made: false, highestCard: null },
+    hasFullHouse: { made: false, highestCard: null },
+    hasFourOfaKind: { made: false, highestCard: null },
+    hasStraightFlush: { made: false, highestCard: null },
+    hasRoyalFlush: false,
+    handStrength: 0,
+    typeOfFlush: ''
+  };
+  checkCombinationFunctions.checkEveryCombination(
+    combinedHandArray,
+    madeHands,
+    combinedHandArrayClone
+  );
+
   return madeHands;
 }
 
@@ -426,9 +414,7 @@ const assignCombinationsToPlayers = (playersArray, cc) => {
   }
 };
 const findWinningFive = (players, idx, cc) => {
-
   const everyCard = [...players[idx].hand.concat(...cc)];
-
 
   // find 5 best cards
 
@@ -439,16 +425,16 @@ const findWinningFive = (players, idx, cc) => {
     .sort((a, b) => b[0] - a[0])
     .slice(0, 5)
     .map((card) => {
-      return getCardByValue(card[0]) + card[1];
+      return cardConversions.getCardByValue(card[0]) + card[1];
     });
 
   return bestFiveCardsToValuesSorted;
 };
 module.exports = {
   checkIfValid,
-  splitTheString,
+  cardConversions,
   assignCombinationsToPlayers,
-  getCardByValue,
   findWinningFive,
-  customSort
+  customSort,
+  cardSuitRanking
 };
