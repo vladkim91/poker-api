@@ -1,7 +1,6 @@
 const { checkHighCardTie } = require('./tieBreakerFunctions/checkHighCardTie');
 const { checkPairTie } = require('./tieBreakerFunctions/checkPairTie');
 const { checkTwoPairTie } = require('./tieBreakerFunctions/checkTwoPairTie');
-const { cardSuitRanking } = require('./functions');
 
 const compareHandStrength = (players, cc) => {
   // Isolate hand strength from array of all players
@@ -20,7 +19,6 @@ const compareHandStrength = (players, cc) => {
       }
     }
 
-    // Run the check for highest scoring combination
     switch (highestStrength) {
       case 0:
         return checkHighCardTie(

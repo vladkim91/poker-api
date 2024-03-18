@@ -413,28 +413,12 @@ const assignCombinationsToPlayers = (playersArray, cc) => {
     };
   }
 };
-const findWinningFive = (players, idx, cc) => {
-  const everyCard = [...players[idx].hand.concat(...cc)];
 
-  // find 5 best cards
-
-  const bestFiveCardsToValuesSorted = everyCard
-    .map((card) => {
-      return [cardRanking[card[0]], card[1]];
-    })
-    .sort((a, b) => b[0] - a[0])
-    .slice(0, 5)
-    .map((card) => {
-      return cardConversions.getCardByValue(card[0]) + card[1];
-    });
-
-  return bestFiveCardsToValuesSorted;
-};
 module.exports = {
   checkIfValid,
   cardConversions,
   assignCombinationsToPlayers,
-  findWinningFive,
+
   customSort,
   cardSuitRanking
 };

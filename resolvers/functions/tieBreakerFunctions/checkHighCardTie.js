@@ -1,8 +1,4 @@
-const {
-  findWinningFive,
-  cardSuitRanking,
-  cardConversions
-} = require('../functions');
+const { cardSuitRanking, cardConversions } = require('../functions');
 
 // Reverse card value to playing cards
 
@@ -153,6 +149,21 @@ const checkHighCardTie = (
   // Before returning indices, call the function to assign winning combinations to all involved players
   assignWinningCombinationsToAll(indices);
   return indices;
+};
+
+const findWinningFive = (players, idx, cc) => {
+  const everyCard = [...players[idx].hand.concat(...cc)];
+  const bestFiveCardsToValuesSorted = everyCard
+    .map((card) => {
+      return [cardSuitRanking.cardRanking[card[0]], card[1]];
+    })
+    .sort((a, b) => b[0] - a[0])
+    .slice(0, 5)
+    .map((card) => {
+      return cardConversions.getCardByValue(card[0]) + card[1];
+    });
+
+  return bestFiveCardsToValuesSorted;
 };
 
 module.exports = { checkHighCardTie };

@@ -4,13 +4,10 @@ const checkPairTie = (indices, players, cc) => {
   let highestPairRank = -1;
   let contenders = [];
 
-  const getRankValue = (card) => cardRanking[card];
-
+  const getRankValue = (card) => cardSuitRanking.cardRanking[card];
   indices.forEach((index) => {
     const player = players[index];
-
     const pairRank = cardSuitRanking.cardRanking[player.hasPair.highestCard[0]];
-
     if (pairRank > highestPairRank) {
       highestPairRank = pairRank;
       contenders = [index]; // Reset contenders with the new highest pair holder
