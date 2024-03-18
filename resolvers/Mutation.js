@@ -18,14 +18,7 @@ exports.Mutation = {
         input.playerInput[i].split('/')
       );
 
-      // add  madeHands object to everplayer player
-
       assignCombinationsToPlayers(players, ...communityCards);
-
-      /**
-       *Packages winners and players into and object and returns data request Object
-       *@returns data package with winner and all players
-       */
 
       const checkWinner = () => {
         const winnerIdx = compareHandStrength(players, ...communityCards);

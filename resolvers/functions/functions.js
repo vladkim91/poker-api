@@ -155,13 +155,11 @@ const checkCombinationFunctions = {
           madeHands.hasTwoPair.made = true;
           madeHands.handStrength = 2;
           madeHands.hasTwoPair.twoPairMade.push(hand[i], hand[n]);
-          combinedHandArrayClone.splice(i, 1);
-          combinedHandArrayClone.splice(n - 1, 1);
-          madeHands.hasTwoPair.kicker = customSort(combinedHandArrayClone)[
-            combinedHandArrayClone.length - 1
-          ];
-          // madeHands.hasTwoPair.kicker = customSort(combinedHandArrayClone.sort()).slice(-1)
-
+          hand.splice(i, 1);
+          hand.splice(n - 1, 1);
+          madeHands.hasTwoPair.kicker = hand.find(
+            (card) => card[0] == customSort(hand)[customSort(hand).length - 1]
+          );
           break;
         }
       }
