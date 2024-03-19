@@ -157,9 +157,12 @@ const checkCombinationFunctions = {
           madeHands.hasTwoPair.twoPairMade.push(hand[i], hand[n]);
           hand.splice(i, 1);
           hand.splice(n - 1, 1);
-          madeHands.hasTwoPair.kicker = hand.find(
-            (card) => card[0] == customSort(hand)[customSort(hand).length - 1]
-          );
+          console.log(customSort(hand.sort())[customSort(hand).length - 1]);
+          madeHands.hasTwoPair.kicker = customSort(hand.sort())[
+            customSort(hand).length - 1
+          ];
+
+          // console.log(madeHands.hasTwoPair.kicker);
           break;
         }
       }
@@ -189,7 +192,7 @@ const checkCombinationFunctions = {
                 )
                 .sort()
             );
-            console.log(sortedRemainderOfTheCards);
+
             madeHands.hasThreeOfaKind.firstKicker =
               sortedRemainderOfTheCards[sortedRemainderOfTheCards.length - 1];
             madeHands.hasThreeOfaKind.secondKicker =
@@ -396,7 +399,7 @@ const checkHand = (hand, cc) => {
     winningCombination: [],
     winningComboValues: [],
     hasPair: { made: false, highestCard: null, kickers: [] },
-    hasTwoPair: { made: false, kicker: '', twoPairMade: [] },
+    hasTwoPair: { made: false, kicker: null, twoPairMade: [] },
     hasThreeOfaKind: {
       made: false,
       firstKicker: null,

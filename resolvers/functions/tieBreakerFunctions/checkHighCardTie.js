@@ -124,8 +124,6 @@ const checkHighCardTie = (
   }
 
   const assignWinningCombinationsToAll = (playerIndices) => {
-    // console.log(cc);
-    console.log('test');
     playerIndices.forEach((idx) => {
       const bestFiveCardsToValuesSorted = [...players[idx].hand.concat(cc)]
         .map((card) => {

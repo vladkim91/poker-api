@@ -3,6 +3,7 @@ const checkTwoPairTie = (indices, players) => {
   // Function to extract pair values and kicker from a player's hand
   const getHandComponents = (player) => {
     const pairs = player.hasTwoPair.twoPairMade.map((card) => card[0]);
+
     return {
       highestPair: Math.max(
         cardSuitRanking.cardRanking[pairs[0]],

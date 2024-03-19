@@ -1,0 +1,28 @@
+// Three of a Kind
+[
+  //     // no tie breaker "vlad"
+  'cc=AH,AC,QD,KC,TD/vlad=AD,3C/tanya=QC,KD',
+  // high 3 vs low 3 "vlad"
+  'cc=AH,5C,QD,KC,TD/vlad=AD,AC/tanya=KH,KD',
+  // first kicker "tanya"
+  'cc=AH,AC,4D,5C,6D/vlad=AD,7C/tanya=AS,9D',
+  // second kicker "vlad"
+  'cc=AH,AC,QD,5C,6D/vlad=AD,JC/tanya=AS,TD',
+  // tie  "both"
+  'cc=AH,AC,QD,5C,6D/vlad=AD,2C/tanya=AS,2D'
+];
+
+// Two Pair
+
+[
+  // no tie breaker "vlad"
+  'cc=AH,KH,QD,JC,9S/vlad=AC,KD/tanya=8C,2D',
+  // first pair "vlad"
+  'cc=AH,KH,QD,JC,9S/vlad=AC,KD/tanya=KC,QC',
+  // second pair "vlad"
+  'cc=AH,KH,QD,JC,9S/vlad=AC,KD/tanya=AD,QC',
+  // kicker "tanya"
+  'cc=AH,KH,KD,5C,4S/vlad=AC,TS/tanya=AD,QC',
+  // tie "both"
+  'cc=AH,KH,KD,5C,4S/vlad=AC,TS/tanya=AD,TC'
+];
