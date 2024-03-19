@@ -157,12 +157,9 @@ const checkCombinationFunctions = {
           madeHands.hasTwoPair.twoPairMade.push(hand[i], hand[n]);
           hand.splice(i, 1);
           hand.splice(n - 1, 1);
-          console.log(customSort(hand.sort())[customSort(hand).length - 1]);
           madeHands.hasTwoPair.kicker = customSort(hand.sort())[
             customSort(hand).length - 1
           ];
-
-          // console.log(madeHands.hasTwoPair.kicker);
           break;
         }
       }

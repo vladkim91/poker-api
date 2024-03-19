@@ -26,3 +26,15 @@
   // tie "both"
   'cc=AH,KH,KD,5C,4S/vlad=AC,TS/tanya=AD,TC'
 ];
+
+// Pair
+[
+  // no tie breaker "vlad"
+  'cc=AH,5H,3D,JC,9S/vlad=AC,TD/tanya=8C,2D',
+  // highCard "vlad"
+  'cc=AH,5H,3D,JC,9S/vlad=AC,TD/tanya=JD,2D',
+  // kicker "tanya"
+  'cc=AH,5H,3D,JC,9S/vlad=AC,TD/tanya=AD,QD',
+  // tie "both"
+  'cc=AH,5H,3D,JC,9S/vlad=AC,TD/tanya=AD,TD'
+];

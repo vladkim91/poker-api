@@ -25,7 +25,6 @@ const checkPairTie = (indices, players, cc) => {
     );
     return [contenders[0]];
   }
-
   let finalWinners = [...contenders];
 
   // Resolve tie with kickers
@@ -39,7 +38,7 @@ const checkPairTie = (indices, players, cc) => {
     // Evaluate kicker for each contender
     finalWinners.forEach((index) => {
       const kickerValue = getRankValue(
-        players[index].hasPair.kickers[kickerIndex]
+        players[index].hasPair.kickers[kickerIndex][0]
       );
 
       if (kickerValue > maxKickerValue) {
@@ -66,6 +65,7 @@ const checkPairTie = (indices, players, cc) => {
       cc
     );
   }
+
   return finalWinners;
 };
 
@@ -74,7 +74,7 @@ const findPairAndKickers = (player, cc) => {
   const allCards = [...player.hand, ...cc];
   for (let i = 0; i < 3; i++) {
     kickersWithSuits.push(
-      allCards.find((card) => card[0] == player.hasPair.kickers[i])
+      allCards.find((card) => card == player.hasPair.kickers[i])
     );
   }
   let madePair;
