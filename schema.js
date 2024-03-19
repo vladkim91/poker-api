@@ -9,8 +9,8 @@ exports.typeDefs = gql`
 
   type Response {
     id: ID!
-    winners: [Player!]!
-    players: [Player!]!
+    winners: [Player!]
+    players: [Player!]
   }
 
   type ResponseArray {

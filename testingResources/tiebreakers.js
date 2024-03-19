@@ -54,5 +54,11 @@
 // Straight
 [
   // no tie "Vlad"
-  'cc=AH,KH,QD,JC,9S/vlad=TC,TD/tanya=QC,2D'
+  'cc=AH,KH,QD,JC,9S/vlad=TC,TD/tanya=QC,2D',
+  // higher straight "tanya"
+  'cc=2H,KH,QD,JC,9S/vlad=TC,TD/tanya=AC,TS',
+  // tie "both"
+  'cc=2H,KH,QD,JC,9S/vlad=TC,TD/tanya=QC,TS',
+  // straigh on the board "both"
+  'cc=TH,KH,QD,JC,9S/vlad=6C,5D/tanya=QC,4S'
 ];

@@ -15,6 +15,18 @@ const cardSuitRanking = {
     Q: 10,
     K: 11,
     A: 12
+  },
+  everyStraightCombination: {
+    A: 'A,2,3,4,5',
+    2: '2,3,4,5,6',
+    3: '3,4,5,6,7',
+    4: '4,5,6,7,8',
+    5: '5,6,7,8,9',
+    6: '6,7,8,9,T',
+    7: '7,8,9,T,J',
+    8: '8,9,T,J,Q',
+    9: '9,T,J,Q,K',
+    T: 'T,J,Q,K,A'
   }
 };
 const cardConversions = {
@@ -205,29 +217,21 @@ const checkCombinationFunctions = {
     let noDuplicateHand = [
       ...new Set(customSort(hand.sort()).map((card) => card[0]))
     ];
+    if (noDuplicateHand.includes('A')) noDuplicateHand.unshift('A');
 
     // Sort player + communityCards
-    const everyStraightCombination = {
-      A: 'A,2,3,4,5',
-      2: '2,3,4,5,6',
-      3: '3,4,5,6,7',
-      4: '4,5,6,7,8',
-      5: '5,6,7,8,9',
-      6: '6,7,8,9,T',
-      7: '7,8,9,T,J',
-      8: '8,9,T,J,Q',
-      9: '9,T,J,Q,K',
-      T: 'T,J,Q,K,A'
-    };
+
     for (let n = 0; n < noDuplicateHand.length - 4; n++) {
       let currentSlice = noDuplicateHand.slice(n, n + 5);
+
       if (
-        currentSlice.toString() == everyStraightCombination[currentSlice[0]]
+        currentSlice.toString() ==
+        cardSuitRanking.everyStraightCombination[currentSlice[0]]
       ) {
         madeHands.hasStraight.made = true;
         madeHands.handStrength = 4;
         madeHands.hasStraight.highestCard =
-          everyStraightCombination[currentSlice[0]][8];
+          cardSuitRanking.everyStraightCombination[currentSlice[0]][8];
       }
     }
   },
@@ -433,5 +437,6 @@ module.exports = {
   checkIfValid,
   assignCombinationsToPlayers,
   cardConversions,
-  cardSuitRanking
+  cardSuitRanking,
+  customSort
 };
