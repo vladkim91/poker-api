@@ -181,11 +181,15 @@ const checkCombinationFunctions = {
             madeHands.handStrength = 3;
             madeHands.hasThreeOfaKind.highestCard = hand[i][0];
             madeHands.hasThreeOfaKind.madeThree = [hand[i], hand[n], hand[y]];
+
             const sortedRemainderOfTheCards = customSort(
-              hand.filter(
-                (card) => card[0][0] !== madeHands.hasThreeOfaKind.highestCard
-              )
+              hand
+                .filter(
+                  (card) => card[0][0] !== madeHands.hasThreeOfaKind.highestCard
+                )
+                .sort()
             );
+            console.log(sortedRemainderOfTheCards);
             madeHands.hasThreeOfaKind.firstKicker =
               sortedRemainderOfTheCards[sortedRemainderOfTheCards.length - 1];
             madeHands.hasThreeOfaKind.secondKicker =
@@ -429,8 +433,7 @@ const assignCombinationsToPlayers = (playersArray, cc) => {
 
 module.exports = {
   checkIfValid,
-  cardConversions,
   assignCombinationsToPlayers,
-  customSort,
+  cardConversions,
   cardSuitRanking
 };
