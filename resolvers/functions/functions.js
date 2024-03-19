@@ -256,9 +256,14 @@ const checkCombinationFunctions = {
 
       for (let i = 0; i < Object.values(suitCounter).length; i++) {
         if (Object.values(suitCounter)[i] > 4) {
-          madeHands.typeOfFlush = Object.keys(suitCounter)[i];
-          flushSuit = madeHands.typeOfFlush[0].toUpperCase();
-          const fiveFlushCards = hand.filter((card) => card[1] == flushSuit);
+          madeHands.hasFlush.typeOfFlush =
+            Object.keys(suitCounter)[i].toUpperCase();
+
+          flushSuit = madeHands.hasFlush.typeOfFlush[0];
+          madeHands.hasFlush.madeFlush = customSort(
+            hand.filter((card) => card[1] == flushSuit)
+          ).reverse();
+          madeHands.hasFlush.highestCard = madeHands.hasFlush.madeFlush[0];
         }
       }
     }
@@ -295,26 +300,26 @@ const checkCombinationFunctions = {
   checkStraightRoyalFlush(hand, madeHands) {
     const tempFlush = [];
     if (madeHands.hasStraight.made && madeHands.hasFlush.made) {
-      switch (madeHands.typeOfFlush) {
-        case 'hearts': {
+      switch (madeHands.hasFlush.typeOfFlush) {
+        case 'HEARTS': {
           for (i = 0; i < hand.length; i++) {
             if (hand[i][1] == 'H') tempFlush.push(hand[i]);
           }
           break;
         }
-        case 'spades': {
+        case 'SPADES': {
           for (i = 0; i < hand.length; i++) {
             if (hand[i][1] == 'S') tempFlush.push(hand[i]);
           }
           break;
         }
-        case 'clubs': {
+        case 'CLUBS': {
           for (i = 0; i < hand.length; i++) {
             if (hand[i][1] == 'C') tempFlush.push(hand[i]);
           }
           break;
         }
-        case 'diamonds': {
+        case 'DIAMONDS': {
           for (let i = 0; i < hand.length; i++) {
             if (hand[i][1] == 'D') tempFlush.push(hand[i]);
           }
@@ -322,29 +327,30 @@ const checkCombinationFunctions = {
         }
       }
 
-      let thirteenCardsInOrder = createDeck().slice(0, 13);
+      let thirteenCardsInOrder = cardConversions.createDeck().slice(0, 13);
       let thirteenCardsWithCustomSuit = [];
       thirteenCardsInOrder.forEach(removeSuit);
       function removeSuit(item, index, arr) {
         thirteenCardsWithCustomSuit.push(
-          item[0] + madeHands.typeOfFlush[0].toUpperCase()
+          item[0] + madeHands.hasFlush.typeOfFlush[0]
         );
       }
       thirteenCardsWithCustomSuit.unshift(
-        'A' + madeHands.typeOfFlush[0].toUpperCase()
+        'A' + madeHands.hasFlush.typeOfFlush[0]
       );
 
       const sortedCombinedHandArray = [...tempFlush].sort();
+
       if (tempFlush[tempFlush.length - 1][0] == 'A') {
         sortedCombinedHandArray.unshift(
-          'A' + madeHands.typeOfFlush[0].toUpperCase()
+          'A' + madeHands.hasFlush.typeOfFlush[0]
         );
       }
 
       let sortedStraighFlush = customSort(sortedCombinedHandArray);
       for (let i = 0; i < sortedStraighFlush.length; i++) {
         sortedStraighFlush[i] =
-          sortedStraighFlush[i] + madeHands.typeOfFlush[0].toUpperCase();
+          sortedStraighFlush[i] + madeHands.hasFlush.typeOfFlush[0];
       }
 
       let slicedArrayOfFive;
@@ -407,13 +413,12 @@ const checkHand = (hand, cc) => {
       madeThree: []
     },
     hasStraight: { made: false, highestCard: null },
-    hasFlush: { made: false, highestCard: null },
+    hasFlush: { made: false, highestCard: null, typeOfFlush: null },
     hasFullHouse: { made: false, highestCard: null },
     hasFourOfaKind: { made: false, highestCard: null },
     hasStraightFlush: { made: false, highestCard: null },
     hasRoyalFlush: false,
-    handStrength: 0,
-    typeOfFlush: ''
+    handStrength: 0
   };
   checkCombinationFunctions.checkEveryCombination(
     combinedHandArray,

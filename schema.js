@@ -27,12 +27,11 @@ exports.typeDefs = gql`
     hasTwoPair: TwoPairCombination!
     hasThreeOfaKind: ThreeOfaKindCombination!
     hasStraight: StraighCombination!
-    # hasFlush: Combination!
+    hasFlush: FlushCombination!
     # hasFullHouse: Combination!
     # hasFourOfaKind: Combination!
     # hasStraightFlush: Combination!
     hasRoyalFlush: Boolean!
-    typeOfFlush: String!
   }
 
   input PlayerInput {
@@ -61,10 +60,12 @@ exports.typeDefs = gql`
     made: Boolean!
     highestCard: String
   }
-  # type FlushCombination {
-  #   made: Boolean!
-  #   highestCard: String
-  # }
+  type FlushCombination {
+    made: Boolean!
+    highestCard: String
+    madeFlush: [String!]!
+    typeOfFlush: String
+  }
   type Error {
     type: String!
   }
