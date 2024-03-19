@@ -26,7 +26,7 @@ exports.typeDefs = gql`
     hasPair: PairCombination!
     hasTwoPair: TwoPairCombination!
     hasThreeOfaKind: ThreeOfaKindCombination!
-    # hasStraight: Combination!
+    hasStraight: StraighCombination!
     # hasFlush: Combination!
     # hasFullHouse: Combination!
     # hasFourOfaKind: Combination!
@@ -57,7 +57,14 @@ exports.typeDefs = gql`
     secondKicker: String
     madeThree: [String]!
   }
-
+  type StraighCombination {
+    made: Boolean!
+    highestCard: String
+  }
+  # type FlushCombination {
+  #   made: Boolean!
+  #   highestCard: String
+  # }
   type Error {
     type: String!
   }

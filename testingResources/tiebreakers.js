@@ -50,3 +50,9 @@
   // TIE
   'cc=AH,5H,TD,JC,9S/vlad=2D,4C/tanya=3D,4D'
 ];
+
+// Straight
+[
+  // no tie "Vlad"
+  'cc=AH,KH,QD,JC,9S/vlad=TC,TD/tanya=QC,2D'
+];

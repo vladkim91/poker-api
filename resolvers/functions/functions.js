@@ -202,34 +202,32 @@ const checkCombinationFunctions = {
   },
 
   checkStraight(hand, madeHands) {
-    // Check for straight
-    // 14 cards without suits with A in the beginning
-    let thirteenCardsInOrder = cardConversions.createDeck().slice(0, 13);
-    let thirteenCardsWithoutSuit = [];
-    thirteenCardsInOrder.forEach(removeSuit);
-    function removeSuit(item, index, arr) {
-      thirteenCardsWithoutSuit.push(item[0]);
-    }
-    thirteenCardsWithoutSuit.unshift('A');
-    // temp Array with 5 cards
-    // 9 itterations
+    let noDuplicateHand = [
+      ...new Set(customSort(hand.sort()).map((card) => card[0]))
+    ];
 
-    const sortedCombinedHandArray = [...hand].sort();
     // Sort player + communityCards
-
-    let slicedArrayOfFive;
-    for (let i = 0; i < 10; i++) {
-      const tempArrayOfFive = [];
-      tempArrayOfFive.push(thirteenCardsWithoutSuit.slice(i, i + 5));
-
-      for (let n = 0; n < 4; n++) {
-        slicedArrayOfFive = customSort(sortedCombinedHandArray).slice(n, n + 5);
-        if (slicedArrayOfFive.toString() == tempArrayOfFive.toString()) {
-          madeHands.hasStraight.made = true;
-          madeHands.handStrength = 4;
-          madeHands.hasStraight.highestCard = slicedArrayOfFive[4][0];
-          break;
-        }
+    const everyStraightCombination = {
+      A: 'A,2,3,4,5',
+      2: '2,3,4,5,6',
+      3: '3,4,5,6,7',
+      4: '4,5,6,7,8',
+      5: '5,6,7,8,9',
+      6: '6,7,8,9,T',
+      7: '7,8,9,T,J',
+      8: '8,9,T,J,Q',
+      9: '9,T,J,Q,K',
+      T: 'T,J,Q,K,A'
+    };
+    for (let n = 0; n < noDuplicateHand.length - 4; n++) {
+      let currentSlice = noDuplicateHand.slice(n, n + 5);
+      if (
+        currentSlice.toString() == everyStraightCombination[currentSlice[0]]
+      ) {
+        madeHands.hasStraight.made = true;
+        madeHands.handStrength = 4;
+        madeHands.hasStraight.highestCard =
+          everyStraightCombination[currentSlice[0]][8];
       }
     }
   },
