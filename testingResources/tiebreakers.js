@@ -36,5 +36,17 @@
   // kicker "tanya"
   'cc=AH,5H,3D,JC,9S/vlad=AC,TD/tanya=AD,QD',
   // tie "both"
-  'cc=AH,5H,3D,JC,9S/vlad=AC,TD/tanya=AD,TD'
+  'cc=AH,5H,3D,JC,9S/vlad=AC,TD/tanya=AD,TC'
+];
+
+// High card
+[
+  // no tie "Vlad"
+  'cc=AH,5H,3D,JC,9S/vlad=KC,TD/tanya=QC,2D',
+  // tie 1st card 2nd kicker "Tanya"
+  'cc=AH,5H,3D,JC,9S/vlad=KC,TD/tanya=KD,QD',
+  // tie 4th kicker "vlad"
+  'cc=AH,5H,3D,JC,9S/vlad=QC,8D/tanya=QD,4D',
+  // TIE
+  'cc=AH,5H,TD,JC,9S/vlad=2D,4C/tanya=3D,4D'
 ];
