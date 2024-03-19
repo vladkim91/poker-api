@@ -7,7 +7,10 @@ const {
   checkTwoPairTie,
   findTwoPairWinningCombination
 } = require('./tieBreakerFunctions/checkTwoPairTie');
-
+const {
+  checkThreeOfaKindTie,
+  findThreeWinningCombination
+} = require('./tieBreakerFunctions/checkThreeOfaKindTie');
 const compareHandStrength = (players, cc) => {
   // Isolate hand strength from array of all players
   const strengthArray = Object.values(players).map((e) => e.handStrength);
@@ -38,6 +41,8 @@ const compareHandStrength = (players, cc) => {
         return checkPairTie(winnersIndices, players, cc);
       case 2:
         return checkTwoPairTie(winnersIndices, players, cc);
+      case 3:
+        return checkThreeOfaKindTie(winnersIndices, players, cc);
     }
   } else {
     let winnerId;
@@ -66,6 +71,8 @@ const assignWinningCombination = (winner, cc) => {
     case 2:
       winner.winningCombination = findTwoPairWinningCombination(winner);
       break;
+    case 3:
+      winner.winningCombination = findThreeWinningCombination(winner);
   }
 };
 

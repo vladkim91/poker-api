@@ -90,7 +90,7 @@ function customSort(sortedArray) {
   const tempPlaceHolder = [];
   for (let i = 0; i < sortedArray.length; i++) {
     if (isNaN(sortedArray[i][0]) != true) {
-      tempPlaceHolder.push(sortedArray[i][0]);
+      tempPlaceHolder.push(sortedArray[i]);
     }
   }
 
@@ -104,7 +104,7 @@ function customSort(sortedArray) {
   function pushTJQKA(card, t) {
     for (let i = 0; i < sortedArray.length; i++) {
       if (isNaN(card[i][0]) != false && card[i][0] == t) {
-        tempPlaceHolder.push(card[i][0]);
+        tempPlaceHolder.push(card[i]);
       }
     }
   }
@@ -180,6 +180,16 @@ const checkCombinationFunctions = {
             madeHands.hasThreeOfaKind.made = true;
             madeHands.handStrength = 3;
             madeHands.hasThreeOfaKind.highestCard = hand[i][0];
+            madeHands.hasThreeOfaKind.madeThree = [hand[i], hand[n], hand[y]];
+            const sortedRemainderOfTheCards = customSort(
+              hand.filter(
+                (card) => card[0][0] !== madeHands.hasThreeOfaKind.highestCard
+              )
+            );
+            madeHands.hasThreeOfaKind.firstKicker =
+              sortedRemainderOfTheCards[sortedRemainderOfTheCards.length - 1];
+            madeHands.hasThreeOfaKind.secondKicker =
+              sortedRemainderOfTheCards[sortedRemainderOfTheCards.length - 2];
             break;
           }
         }
@@ -383,7 +393,13 @@ const checkHand = (hand, cc) => {
     winningComboValues: [],
     hasPair: { made: false, highestCard: null, kickers: [] },
     hasTwoPair: { made: false, kicker: '', twoPairMade: [] },
-    hasThreeOfaKind: { made: false, highestCard: null },
+    hasThreeOfaKind: {
+      made: false,
+      firstKicker: null,
+      secondKicker: null,
+      highestCard: null,
+      madeThree: []
+    },
     hasStraight: { made: false, highestCard: null },
     hasFlush: { made: false, highestCard: null },
     hasFullHouse: { made: false, highestCard: null },

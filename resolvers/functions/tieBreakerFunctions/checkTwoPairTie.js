@@ -17,7 +17,7 @@ const checkTwoPairTie = (indices, players) => {
   };
 
   // Compare players based on the poker hand ranking rules
-  let winningIndices = [];
+  let winners = [];
   let bestHand = { highestPair: -1, secondPair: -1, kicker: -1 };
 
   indices.forEach((index) => {
@@ -41,29 +41,30 @@ const checkTwoPairTie = (indices, players) => {
     };
 
     if (isBetterHand(handComponents, bestHand)) {
-      winningIndices = [index];
+      winners = [index];
       bestHand = handComponents;
     } else if (
       handComponents.highestPair === bestHand.highestPair &&
       handComponents.secondPair === bestHand.secondPair &&
       handComponents.kicker === bestHand.kicker
     ) {
-      winningIndices.push(index);
+      winners.push(index);
     }
   });
 
-  if (winningIndices.length == 1) {
-    players[winningIndices[0]].winningCombination =
-      findTwoPairWinningCombination(players[winningIndices[0]]);
+  if (winners.length == 1) {
+    players[winners[0]].winningCombination = findTwoPairWinningCombination(
+      players[winners[0]]
+    );
   } else {
-    winningIndices.forEach((index) => {
+    winners.forEach((index) => {
       players[index].winningCombination = findTwoPairWinningCombination(
         players[index]
       );
     });
   }
 
-  return winningIndices;
+  return winners;
 };
 
 const findTwoPairWinningCombination = (player) => {
