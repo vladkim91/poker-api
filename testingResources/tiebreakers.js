@@ -62,3 +62,15 @@
   // straigh on the board "both"
   'cc=TH,KH,QD,JC,9S/vlad=6C,5D/tanya=QC,4S'
 ];
+
+// Flush
+[
+  // no tie "vlad"
+  'cc=TC,9C,QC,JH,4S/vlad=8C,AC/tanya=AD,AH',
+  // higher card flush "vlad"
+  'cc=TC,9C,QC,JC,4D/vlad=8D,AC/tanya=KC,2C',
+  // same high card ,higher kicker flush "vlad"
+  'cc=TC,KC,QC,JC,4C/vlad=8D,5C/tanya=9H,2C/vitya=3C,5D',
+  // same high card and kickers "tie" 3way
+  'cc=9C,KC,QC,JC,AC/vlad=8D,5C/tanya=9H,2C/vitya=3C,5D'
+];

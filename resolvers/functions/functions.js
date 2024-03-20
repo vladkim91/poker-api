@@ -262,7 +262,9 @@ const checkCombinationFunctions = {
           flushSuit = madeHands.hasFlush.typeOfFlush[0];
           madeHands.hasFlush.madeFlush = customSort(
             hand.filter((card) => card[1] == flushSuit)
-          ).reverse();
+          )
+            .reverse()
+            .splice(0, 5);
           madeHands.hasFlush.highestCard = madeHands.hasFlush.madeFlush[0];
         }
       }
