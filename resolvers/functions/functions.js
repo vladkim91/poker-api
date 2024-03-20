@@ -314,23 +314,69 @@ const checkCombinationFunctions = {
       madeHands.hasFullHouse.kicker = madeHands.hasFullHouse.pair[0][0];
     }
   },
+  // checkFourOfaKind(hand, madeHands) {
+  //   for (let i = 0; i < hand.length; i++) {
+  //     for (let n = 0; n < hand.length; n++) {
+  //       if (hand[i][0] == hand[n][0] && i != n) {
+  //         for (let x = 0; x < hand.length; x++) {
+  //           if (hand[n][0] == hand[x][0] && n != x && i != x) {
+  //             for (let y = 0; y < hand.length; y++) {
+  //               if (hand[x][0] == hand[y][0] && x != y && n != y && i != y) {
+  //                 madeHands.hasFourOfaKind.made = true;
+  //                 madeHands.hasFullHouse.made = false;
+  //                 madeHands.handStrength = 7;
+  //                 madeHands.hasFourOfaKind.fourMade = [
+  //                   hand[n],
+  //                   hand[x],
+  //                   hand[y],
+  //                   hand[i]
+  //                 ];
+  //               }
+  //             }
+  //           }
+  //         }
+  //       }
+  //     }
+  //   }
+  // },
   checkFourOfaKind(hand, madeHands) {
-    for (let i = 0; i < hand.length; i++) {
-      for (let n = 0; n < hand.length; n++) {
-        if (hand[i][0] == hand[n][0] && i != n) {
-          for (let x = 0; x < hand.length; x++) {
-            if (hand[n][0] == hand[x][0] && n != x && i != x) {
-              for (let y = 0; y < hand.length; y++) {
-                if (hand[x][0] == hand[y][0] && x != y && n != y && i != y) {
-                  madeHands.hasFourOfaKind.made = true;
-                  madeHands.hasFullHouse.made = false;
-                  madeHands.handStrength = 7;
-                }
-              }
-            }
-          }
-        }
+    // Initialize a map to count occurrences of each rank
+    let rankCount = {};
+    hand.forEach((card) => {
+      const rank = card[0];
+      rankCount[rank] = (rankCount[rank] || 0) + 1;
+    });
+
+    // Find the rank that occurs four times
+    let fourOfaKindRank = null;
+    for (let rank in rankCount) {
+      if (rankCount[rank] === 4) {
+        fourOfaKindRank = rank;
+        madeHands.hasFourOfaKind.made = true;
+        madeHands.hasFullHouse.made = false;
+        madeHands.handStrength = 7;
+        madeHands.hasFourOfaKind.fourMade = hand.filter(
+          (card) => card[0] === rank
+        );
+        madeHands.hasFourOfaKind.highestCard =
+          madeHands.hasFourOfaKind.fourMade[0][0];
+        break;
       }
+    }
+
+    // If a Four of a Kind was found, find the highest kicker
+    if (fourOfaKindRank) {
+      let kickers = hand
+        .filter((card) => card[0] !== fourOfaKindRank)
+        .map((card) => ({
+          rank: card[0],
+          value: cardSuitRanking.cardRanking[card[0]]
+        }));
+      let highestKicker = kickers.reduce(
+        (max, card) => (card.value > max.value ? card : max),
+        { value: -1 }
+      );
+      madeHands.hasFourOfaKind.kicker = highestKicker.rank;
     }
   },
 
@@ -459,7 +505,12 @@ const checkHand = (hand, cc) => {
       pair: [],
       fullHouse: []
     },
-    hasFourOfaKind: { made: false, highestCard: null },
+    hasFourOfaKind: {
+      made: false,
+      highestCard: null,
+      fourMade: [],
+      kicker: null
+    },
     hasStraightFlush: { made: false, highestCard: null },
     hasRoyalFlush: false,
     handStrength: 0

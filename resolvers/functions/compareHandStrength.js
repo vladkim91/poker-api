@@ -25,6 +25,11 @@ const {
   checkFullHouseTie,
   findWinningFullHouse
 } = require('./tieBreakerFunctions/checkFullHouseTie');
+
+const {
+  checkFourOfaKindTie,
+  findFourWithKicker
+} = require('./tieBreakerFunctions/checkFourOfaKindTie');
 const compareHandStrength = (players, cc) => {
   // Isolate hand strength from array of all players
   const strengthArray = Object.values(players).map((e) => e.handStrength);
@@ -63,6 +68,8 @@ const compareHandStrength = (players, cc) => {
         return checkFlushTie(winnersIndices, players, cc);
       case 6:
         return checkFullHouseTie(winnersIndices, players, cc);
+      case 7:
+        return checkFourOfaKindTie(winnersIndices, players, cc);
     }
   } else {
     let winnerId;
@@ -102,6 +109,10 @@ const assignWinningCombination = (winner, cc) => {
       break;
     case 6:
       winner.winningCombination = findWinningFullHouse(winner, cc);
+      break;
+    case 7:
+      winner.winningCombination = findFourWithKicker(winner, cc);
+      break;
   }
 };
 

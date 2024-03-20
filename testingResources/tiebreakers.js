@@ -88,3 +88,15 @@
   // tie FH on the board
   'cc=AC,AH,KC,KH,AD/vlad=3D,2D/tanya=3S,2S'
 ];
+
+// Four of a kind
+[
+  // no tie
+  'cc=AC,AH,AS,TH,TD/vlad=AD,2C/tanya=TS,4C',
+  // higher 4 "vlad"
+  'cc=AC,AH,AS,TH,TD/vlad=AD,2C/tanya=TS,TC',
+  // higherKicker "vlad"
+  'cc=AS,AH,AC,AD,3D/vlad=KD,JC/tanya=TS,QH',
+  // tie same hand on board
+  'cc=AC,AH,AS,AD,KD/vlad=2D,3D/tanya=5S,4H'
+];
