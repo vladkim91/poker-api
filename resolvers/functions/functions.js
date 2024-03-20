@@ -314,31 +314,6 @@ const checkCombinationFunctions = {
       madeHands.hasFullHouse.kicker = madeHands.hasFullHouse.pair[0][0];
     }
   },
-  // checkFourOfaKind(hand, madeHands) {
-  //   for (let i = 0; i < hand.length; i++) {
-  //     for (let n = 0; n < hand.length; n++) {
-  //       if (hand[i][0] == hand[n][0] && i != n) {
-  //         for (let x = 0; x < hand.length; x++) {
-  //           if (hand[n][0] == hand[x][0] && n != x && i != x) {
-  //             for (let y = 0; y < hand.length; y++) {
-  //               if (hand[x][0] == hand[y][0] && x != y && n != y && i != y) {
-  //                 madeHands.hasFourOfaKind.made = true;
-  //                 madeHands.hasFullHouse.made = false;
-  //                 madeHands.handStrength = 7;
-  //                 madeHands.hasFourOfaKind.fourMade = [
-  //                   hand[n],
-  //                   hand[x],
-  //                   hand[y],
-  //                   hand[i]
-  //                 ];
-  //               }
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-  //   }
-  // },
   checkFourOfaKind(hand, madeHands) {
     // Initialize a map to count occurrences of each rank
     let rankCount = {};
@@ -431,29 +406,28 @@ const checkCombinationFunctions = {
       }
 
       let sortedStraighFlush = customSort(sortedCombinedHandArray);
-      for (let i = 0; i < sortedStraighFlush.length; i++) {
-        sortedStraighFlush[i] =
-          sortedStraighFlush[i] + madeHands.hasFlush.typeOfFlush[0];
-      }
-
       let slicedArrayOfFive;
       for (let i = 0; i < 10; i++) {
         const tempArrayOfFive = [];
-        tempArrayOfFive.push(thirteenCardsWithCustomSuit.slice(i, i + 5));
+        tempArrayOfFive.push(...thirteenCardsWithCustomSuit.slice(i, i + 5));
 
         for (let n = 0; n < 3; n++) {
           slicedArrayOfFive = sortedStraighFlush.slice(n, n + 5);
-
+          // console.log(slicedArrayOfFive);
           if (i != 9) {
             if (slicedArrayOfFive.toString() == tempArrayOfFive.toString()) {
               madeHands.hasStraightFlush.made = true;
               madeHands.handStrength = 8;
+              madeHands.hasStraightFlush.highestCard = slicedArrayOfFive[4];
+              madeHands.hasStraightFlush.madeStraightFlush =
+                slicedArrayOfFive.reverse();
             }
           } else {
             if (slicedArrayOfFive.toString() == tempArrayOfFive.toString()) {
               madeHands.hasStraightFlush.made = true;
               madeHands.hasRoyalFlush = true;
               madeHands.handStrength = 9;
+              madeHands.winningCombination = slicedArrayOfFive.reverse();
             }
           }
         }
@@ -511,7 +485,7 @@ const checkHand = (hand, cc) => {
       fourMade: [],
       kicker: null
     },
-    hasStraightFlush: { made: false, highestCard: null },
+    hasStraightFlush: { made: false, highestCard: null, madeStraightFlush: [] },
     hasRoyalFlush: false,
     handStrength: 0
   };

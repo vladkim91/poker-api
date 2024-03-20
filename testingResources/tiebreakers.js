@@ -100,3 +100,15 @@
   // tie same hand on board
   'cc=AC,AH,AS,AD,KD/vlad=2D,3D/tanya=5S,4H'
 ];
+
+// straight and royal flush
+[
+  // tie
+  'cc=9H,KH,QH,JH,3D/vlad=TH,2D/tanya=8D,TD',
+  // higher straigh flush
+  'cc=9H,TH,QH,JH,3D/vlad=KH,2D/tanya=8H,TD',
+  // SF on the board
+  'cc=9H,TH,QH,JH,KH/vlad=2H,2D/tanya=8H,TD',
+  // royal flush
+  'cc=2D,TH,QH,JH,KH/vlad=AH,2C/tanya=9H,TD'
+];

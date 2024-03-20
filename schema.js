@@ -30,7 +30,7 @@ exports.typeDefs = gql`
     hasFlush: FlushCombination!
     hasFullHouse: FullHouseCombination!
     hasFourOfaKind: FourOfaKindCombination!
-    # hasStraightFlush: Combination!
+    hasStraightFlush: hasStraightFlush!
     hasRoyalFlush: Boolean!
   }
 
@@ -82,6 +82,12 @@ exports.typeDefs = gql`
     highestCard: String
     kicker: String
   }
+  type hasStraightFlush {
+    made: Boolean!
+    highestCard: String
+    madeStraightFlush: [String!]
+  }
+
   type Error {
     type: String!
   }
