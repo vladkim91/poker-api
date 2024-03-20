@@ -1,48 +1,9 @@
-const { checkHighCardTie } = require('./tieBreakerFunctions/checkHighCardTie');
-const {
-  checkPairTie,
-  findPairAndKickers
-} = require('./tieBreakerFunctions/checkPairTie');
-const {
-  checkTwoPairTie,
-  findTwoPairWinningCombination
-} = require('./tieBreakerFunctions/checkTwoPairTie');
-const {
-  checkThreeOfaKindTie,
-  findThreeWinningCombination
-} = require('./tieBreakerFunctions/checkThreeOfaKindTie');
-const {
-  checkStraightTie,
-  findWinningStraightCombination
-} = require('./tieBreakerFunctions/checkStraightTie');
-
-const {
-  checkFlushTie,
-  findWinningFlushCombination
-} = require('./tieBreakerFunctions/checkFlushTie');
-
-const {
-  checkFullHouseTie,
-  findWinningFullHouse
-} = require('./tieBreakerFunctions/checkFullHouseTie');
-
-const {
-  checkFourOfaKindTie,
-  findFourWithKicker
-} = require('./tieBreakerFunctions/checkFourOfaKindTie');
-
-const {
-  checkStraightFlushTie,
-  findStraightFlushCombination
-} = require('./tieBreakerFunctions/checkStraightFlushTie');
+const { tieBreakers } = require('./tieBreakerFunctions/tieBreakerFunctions');
+const { findCombinations } = require('./tieBreakerFunctions/findCombinations');
 const compareHandStrength = (players, cc) => {
-  // Isolate hand strength from array of all players
   const strengthArray = Object.values(players).map((e) => e.handStrength);
-
-  // Find the highest strength
   const highestStrength = Math.max(...strengthArray);
 
-  // Check if there are more than 1 players with the highest strength hand
   if (strengthArray.filter((e) => e === highestStrength).length > 1) {
     const winnersIndices = [];
     // add indices of the highest strength hand players to the array
@@ -54,7 +15,7 @@ const compareHandStrength = (players, cc) => {
 
     switch (highestStrength) {
       case 0:
-        return checkHighCardTie(
+        return tieBreakers.checkHighCardTie(
           winnersIndices,
           strengthArray,
           highestStrength,
@@ -62,21 +23,21 @@ const compareHandStrength = (players, cc) => {
           cc
         );
       case 1:
-        return checkPairTie(winnersIndices, players, cc);
+        return tieBreakers.checkPairTie(winnersIndices, players, cc);
       case 2:
-        return checkTwoPairTie(winnersIndices, players, cc);
+        return tieBreakers.checkTwoPairTie(winnersIndices, players, cc);
       case 3:
-        return checkThreeOfaKindTie(winnersIndices, players, cc);
+        return tieBreakers.checkThreeOfaKindTie(winnersIndices, players, cc);
       case 4:
-        return checkStraightTie(winnersIndices, players, cc);
+        return tieBreakers.checkStraightTie(winnersIndices, players, cc);
       case 5:
-        return checkFlushTie(winnersIndices, players, cc);
+        return tieBreakers.checkFlushTie(winnersIndices, players, cc);
       case 6:
-        return checkFullHouseTie(winnersIndices, players, cc);
+        return tieBreakers.checkFullHouseTie(winnersIndices, players, cc);
       case 7:
-        return checkFourOfaKindTie(winnersIndices, players, cc);
+        return tieBreakers.checkFourOfaKindTie(winnersIndices, players, cc);
       case 8:
-        return checkStraightFlushTie(winnersIndices, players, cc);
+        return tieBreakers.checkStraightFlushTie(winnersIndices, players, cc);
     }
   } else {
     let winnerId;
@@ -100,28 +61,44 @@ const compareHandStrength = (players, cc) => {
 const assignWinningCombination = (winner, cc) => {
   switch (winner.handStrength) {
     case 1:
-      winner.winningCombination = findPairAndKickers(winner, cc);
+      winner.winningCombination = findCombinations.findPairAndKickers(
+        winner,
+        cc
+      );
       break;
     case 2:
-      winner.winningCombination = findTwoPairWinningCombination(winner);
+      winner.winningCombination =
+        findCombinations.findTwoPairWinningCombination(winner);
       break;
     case 3:
-      winner.winningCombination = findThreeWinningCombination(winner);
+      winner.winningCombination =
+        findCombinations.findThreeWinningCombination(winner);
       break;
     case 4:
-      winner.winningCombination = findWinningStraightCombination(winner, cc);
+      winner.winningCombination =
+        findCombinations.findWinningStraightCombination(winner, cc);
       break;
     case 5:
-      winner.winningCombination = findWinningFlushCombination(winner, cc);
+      winner.winningCombination = findCombinations.findWinningFlushCombination(
+        winner,
+        cc
+      );
       break;
     case 6:
-      winner.winningCombination = findWinningFullHouse(winner, cc);
+      winner.winningCombination = findCombinations.findWinningFullHouse(
+        winner,
+        cc
+      );
       break;
     case 7:
-      winner.winningCombination = findFourWithKicker(winner, cc);
+      winner.winningCombination = findCombinations.findFourWithKicker(
+        winner,
+        cc
+      );
       break;
     case 8:
-      winner.winningCombination = findStraightFlushCombination(winner);
+      winner.winningCombination =
+        findCombinations.findStraightFlushCombination(winner);
   }
 };
 

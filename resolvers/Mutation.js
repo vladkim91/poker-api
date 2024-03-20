@@ -34,7 +34,7 @@ exports.Mutation = {
         }
       };
 
-      function createId(length) {
+      function createPlayId(length) {
         let result = '';
         const characters =
           'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -48,8 +48,11 @@ exports.Mutation = {
         }
         return result;
       }
-      // const data = { winners: checkWinner(), players: players, id: createId(20) };
-      data.push({ winners: checkWinner(), players: players, id: createId(20) });
+      data.push({
+        winners: checkWinner(),
+        players: players,
+        id: createPlayId(20)
+      });
     }
     return data;
   }
