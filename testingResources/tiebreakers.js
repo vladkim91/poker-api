@@ -74,3 +74,17 @@
   // same high card and kickers "tie" 3way
   'cc=9C,KC,QC,JC,AC/vlad=8D,5C/tanya=9H,2C/vitya=3C,5D'
 ];
+
+// Full House
+[
+  // no tie
+  'cc=AC,AH,KC,KH,QD/vlad=AD,2C/tanya=2S,3H',
+  // // higher full
+  'cc=AC,AH,KC,KH,QD/vlad=AD,2C/tanya=KS,QH',
+  // full tie higher kicker "vlad"
+  'cc=AC,AH,KC,5H,QD/vlad=AD,KD/tanya=AS,QH',
+  // tie same hand
+  'cc=AC,AH,KC,5H,QD/vlad=AD,KD/tanya=AS,KS',
+  // tie FH on the board
+  'cc=AC,AH,KC,KH,AD/vlad=3D,2D/tanya=3S,2S'
+];

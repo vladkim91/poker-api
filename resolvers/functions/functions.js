@@ -172,6 +172,28 @@ const checkCombinationFunctions = {
           madeHands.hasTwoPair.kicker = customSort(hand.sort())[
             customSort(hand).length - 1
           ];
+
+          if (madeHands.hasTwoPair.twoPairMade.length > 4) {
+            let bestTwoPairs = [];
+            highestRankingPair = [
+              ...new Set(
+                madeHands.hasTwoPair.twoPairMade.map((card) => card[0])
+              )
+            ]
+              .map((cardValue) => cardSuitRanking.cardRanking[cardValue])
+              .sort((a, b) => a - b)
+              .slice(1, 3);
+
+            madeHands.hasTwoPair.twoPairMade.forEach((card) => {
+              if (
+                highestRankingPair.includes(
+                  cardSuitRanking.cardRanking[card[0]]
+                )
+              )
+                bestTwoPairs.push(card);
+            });
+            madeHands.hasTwoPair.twoPairMade = bestTwoPairs;
+          }
           break;
         }
       }
@@ -277,6 +299,19 @@ const checkCombinationFunctions = {
     ) {
       madeHands.hasFullHouse.made = true;
       madeHands.handStrength = 6;
+      madeHands.hasFullHouse.full = madeHands.hasThreeOfaKind.madeThree[0][0];
+      madeHands.hasFullHouse.three = madeHands.hasThreeOfaKind.madeThree;
+      madeHands.hasFullHouse.fullHouse = [
+        ...new Set(
+          madeHands.hasThreeOfaKind.madeThree.concat(
+            madeHands.hasTwoPair.twoPairMade
+          )
+        )
+      ];
+      madeHands.hasFullHouse.pair = madeHands.hasFullHouse.fullHouse.filter(
+        (card) => !madeHands.hasFullHouse.three.includes(card)
+      );
+      madeHands.hasFullHouse.kicker = madeHands.hasFullHouse.pair[0][0];
     }
   },
   checkFourOfaKind(hand, madeHands) {
@@ -416,7 +451,14 @@ const checkHand = (hand, cc) => {
     },
     hasStraight: { made: false, highestCard: null },
     hasFlush: { made: false, highestCard: null, typeOfFlush: null },
-    hasFullHouse: { made: false, highestCard: null },
+    hasFullHouse: {
+      made: false,
+      full: null,
+      kicker: null,
+      three: [],
+      pair: [],
+      fullHouse: []
+    },
     hasFourOfaKind: { made: false, highestCard: null },
     hasStraightFlush: { made: false, highestCard: null },
     hasRoyalFlush: false,

@@ -28,7 +28,7 @@ exports.typeDefs = gql`
     hasThreeOfaKind: ThreeOfaKindCombination!
     hasStraight: StraighCombination!
     hasFlush: FlushCombination!
-    # hasFullHouse: Combination!
+    hasFullHouse: FullHouseCombination!
     # hasFourOfaKind: Combination!
     # hasStraightFlush: Combination!
     hasRoyalFlush: Boolean!
@@ -39,7 +39,7 @@ exports.typeDefs = gql`
   }
   type PairCombination {
     made: Boolean!
-    kickers: [String!]!
+    kickers: [String!]
     highestCard: String
   }
 
@@ -54,7 +54,7 @@ exports.typeDefs = gql`
     highestCard: String
     firstKicker: String
     secondKicker: String
-    madeThree: [String]!
+    madeThree: [String]
   }
   type StraighCombination {
     made: Boolean!
@@ -63,8 +63,17 @@ exports.typeDefs = gql`
   type FlushCombination {
     made: Boolean!
     highestCard: String
-    madeFlush: [String!]!
+    madeFlush: [String!]
     typeOfFlush: String
+  }
+
+  type FullHouseCombination {
+    made: Boolean!
+    full: String
+    kicker: String
+    three: [String!]
+    pair: [String!]
+    fullHouse: [String!]
   }
   type Error {
     type: String!
