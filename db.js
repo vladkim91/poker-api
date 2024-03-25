@@ -1,7 +1,8 @@
-const players = [
+const players = [];
 
-]
+const messages = [];
 
 exports.db = {
-    players
-}
+  players,
+  messages
+};

@@ -2,9 +2,19 @@ const { gql } = require('apollo-server');
 exports.typeDefs = gql`
   type Query {
     players: [Player!]!
+    messages: [Message!]
   }
   type Mutation {
     calcWinner(input: PlayerInput!): [Response!]
+    postMessage(user: String!, content: String!): ID!
+  }
+  type Subscription {
+    messageAdded(id: ID!): Message
+  }
+  type Message {
+    id: ID!
+    user: String!
+    content: String!
   }
 
   type Response {

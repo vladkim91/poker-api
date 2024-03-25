@@ -55,5 +55,11 @@ exports.Mutation = {
       });
     }
     return data;
+  },
+  postMessage: (parent, { user, content }, { db }) => {
+    const id = db.messages.length;
+    db.messages.push({ id, user, content });
+
+    return id;
   }
 };
