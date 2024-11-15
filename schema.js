@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+const { gql } = require('graphql-tag');
 exports.typeDefs = gql`
   type Query {
     players: [Player!]!
