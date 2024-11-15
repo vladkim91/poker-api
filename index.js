@@ -27,12 +27,15 @@ async function startServer() {
   // Apply CORS middleware
   app.use(
     cors({
-      origin: ['https://studio.apollographql.com'],
+      origin: 'https://studio.apollographql.com',
       methods: ['GET', 'POST', 'OPTIONS'],
-      credentials: true,
-      allowedHeaders: ['Content-Type', 'Authorization']
+      allowedHeaders: ['Content-Type', 'Authorization'],
+      credentials: true
     })
   );
+
+  // Handle OPTIONS requests for CORS preflight
+  app.options('*', cors());
 
   // Start Apollo Server
   await server.start();
