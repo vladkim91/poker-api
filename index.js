@@ -14,14 +14,16 @@ const resolvers = {
 // Create Apollo Server instance
 const server = new ApolloServer({
   typeDefs,
-  resolvers
+  resolvers,
+  introspection: true
 });
 
 // Start the server with context
 async function startServer() {
+  const port = process.env.PORT || 4000;
   const { url } = await startStandaloneServer(server, {
     context: async () => ({ db }),
-    listen: { port: 4000 }
+    listen: { port }
   });
   console.log(`🚀 Server started at ${url}`);
 }
