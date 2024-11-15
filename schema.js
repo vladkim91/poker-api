@@ -35,7 +35,7 @@ exports.typeDefs = gql`
   }
 
   input PlayerInput {
-    playerInput: [String!]
+    playerInput: String!
   }
   type PairCombination {
     made: Boolean!

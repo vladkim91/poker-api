@@ -8,52 +8,53 @@ const { compareHandStrength } = require('./functions/compareHandStrength.js');
 
 exports.Mutation = {
   calcWinner: (parent, { input }, context) => {
-    const data = [];
-    for (let i = 0; i < input.playerInput.length; i++) {
-      if (!checkIfValid(input.playerInput[i])) {
-        throw new Error('Invalid Cards');
+    // Check if the input string is valid
+    if (!checkIfValid(input.playerInput)) {
+      throw new Error('Invalid Cards');
+    }
+
+    // Split the input string into players and community cards
+    const [players, communityCards] = cardConversions.splitTheString(
+      input.playerInput.split('/')
+    );
+
+    // Assign combinations to players using community cards
+    assignCombinationsToPlayers(players, ...communityCards);
+
+    // Function to determine the winner
+    const checkWinner = () => {
+      const winnerIdx = compareHandStrength(players, ...communityCards);
+      if (Array.isArray(winnerIdx)) {
+        // Handle case where multiple winners are present
+        return winnerIdx.map((idx) => players[idx]);
+      } else if (typeof winnerIdx === 'number') {
+        // Handle case with a single winner
+        return [players[winnerIdx]];
       }
+      return [];
+    };
 
-      const [players, communityCards] = cardConversions.splitTheString(
-        input.playerInput[i].split('/')
-      );
-
-      assignCombinationsToPlayers(players, ...communityCards);
-
-      const checkWinner = () => {
-        const winnerIdx = compareHandStrength(players, ...communityCards);
-        if (typeof winnerIdx == 'object') {
-          const winners = [];
-          for (let i of winnerIdx) {
-            winners.push(players[i]);
-          }
-
-          return winners;
-        } else if (typeof winnerIdx == 'number') {
-          return [players[winnerIdx]];
-        }
-      };
-
-      function createPlayId(length) {
-        let result = '';
-        const characters =
-          'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        const charactersLength = characters.length;
-        let counter = 0;
-        while (counter < length) {
-          result += characters.charAt(
-            Math.floor(Math.random() * charactersLength)
-          );
-          counter += 1;
-        }
-        return result;
+    // Generate a unique ID for the play
+    function createPlayId(length) {
+      let result = '';
+      const characters =
+        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+      const charactersLength = characters.length;
+      for (let i = 0; i < length; i++) {
+        result += characters.charAt(
+          Math.floor(Math.random() * charactersLength)
+        );
       }
-      data.push({
+      return result;
+    }
+
+    // Return the result data
+    return [
+      {
         winners: checkWinner(),
         players: players,
         id: createPlayId(20)
-      });
-    }
-    return data;
+      }
+    ];
   }
 };
