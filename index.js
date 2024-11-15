@@ -27,9 +27,10 @@ async function startServer() {
   // Apply CORS middleware
   app.use(
     cors({
-      origin: ['https://studio.apollographql.com', '*'],
+      origin: ['https://studio.apollographql.com'],
       methods: ['GET', 'POST', 'OPTIONS'],
-      credentials: true
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization']
     })
   );
 
