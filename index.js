@@ -23,7 +23,13 @@ async function startServer() {
   const port = process.env.PORT || 4000;
   const { url } = await startStandaloneServer(server, {
     context: async () => ({ db }),
-    listen: { port }
+    listen: { port },
+    cors: {
+      origin: ['https://studio.apollographql.com', '*'],
+      methods: ['GET', 'POST', 'OPTIONS'],
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization']
+    }
   });
   console.log(`🚀 Server started at ${url}`);
 }
