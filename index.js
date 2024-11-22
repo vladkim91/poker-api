@@ -3,6 +3,7 @@ const { ApolloServer } = require('@apollo/server');
 const { expressMiddleware } = require('@apollo/server/express4');
 const http = require('http');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const { typeDefs } = require('./schema');
 const { Query } = require('./resolvers/Query');
 const { Mutation } = require('./resolvers/Mutation');
@@ -29,13 +30,12 @@ async function startServer() {
     cors({
       origin: 'https://studio.apollographql.com',
       methods: ['GET', 'POST', 'OPTIONS'],
-      allowedHeaders: ['Content-Type', 'Authorization'],
       credentials: true
     })
   );
 
-  // Handle OPTIONS requests for CORS preflight
-  app.options('*', cors());
+  // Apply JSON body parser middleware (important!)
+  app.use(bodyParser.json());
 
   // Start Apollo Server
   await server.start();
